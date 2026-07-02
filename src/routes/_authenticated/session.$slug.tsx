@@ -6,7 +6,7 @@ import {
   Building2, ShieldAlert, Terminal, Zap, Trophy, MessageCircleQuestion,
   Briefcase, PlayCircle, CheckCircle2, XCircle,
 } from "lucide-react";
-import { getSession, MONTH_1 } from "@/content/month1";
+import { getSession, MONTH_1, type Session } from "@/content/month1";
 import { markSessionStarted, updateSessionProgress } from "@/lib/progress-hooks";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
