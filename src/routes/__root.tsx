@@ -94,6 +94,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0b1220" },
+      { name: "twitter:title", content: "Cybersec Masters — Enterprise Learning OS" },
+      { name: "description", content: "Cyber Nexus is an Enterprise Cybersecurity Learning Operating System that transforms curriculum into immersive, interactive learning experiences." },
+      { property: "og:description", content: "Cyber Nexus is an Enterprise Cybersecurity Learning Operating System that transforms curriculum into immersive, interactive learning experiences." },
+      { name: "twitter:description", content: "Cyber Nexus is an Enterprise Cybersecurity Learning Operating System that transforms curriculum into immersive, interactive learning experiences." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/629046dd-c584-42cc-94a2-9617858d9100/id-preview-31f12966--c28e4e6c-21db-4eaf-813b-3c08dc98fabd.lovable.app-1782967122006.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/629046dd-c584-42cc-94a2-9617858d9100/id-preview-31f12966--c28e4e6c-21db-4eaf-813b-3c08dc98fabd.lovable.app-1782967122006.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
