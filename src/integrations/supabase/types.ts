@@ -47,33 +47,63 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          bio: string | null
           cohort: string | null
+          company: string | null
           created_at: string
+          designation: string | null
           display_name: string | null
+          email: string | null
+          email_verified: boolean | null
           id: string
+          is_active: boolean | null
           last_active_date: string | null
+          last_login: string | null
+          phone: string | null
+          role: string | null
           streak_days: number
           updated_at: string
+          username: string | null
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
           cohort?: string | null
+          company?: string | null
           created_at?: string
+          designation?: string | null
           display_name?: string | null
+          email?: string | null
+          email_verified?: boolean | null
           id: string
+          is_active?: boolean | null
           last_active_date?: string | null
+          last_login?: string | null
+          phone?: string | null
+          role?: string | null
           streak_days?: number
           updated_at?: string
+          username?: string | null
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
           cohort?: string | null
+          company?: string | null
           created_at?: string
+          designation?: string | null
           display_name?: string | null
+          email?: string | null
+          email_verified?: boolean | null
           id?: string
+          is_active?: boolean | null
           last_active_date?: string | null
+          last_login?: string | null
+          phone?: string | null
+          role?: string | null
           streak_days?: number
           updated_at?: string
+          username?: string | null
         }
         Relationships: []
       }
