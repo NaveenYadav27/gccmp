@@ -12,6 +12,11 @@ import {
   ClipboardCheck,
   Shield,
   LogOut,
+  Building2,
+  Network,
+  AlertTriangle,
+  Zap,
+  Briefcase,
 } from "lucide-react";
 import {
   Sidebar,
@@ -34,9 +39,12 @@ const LEARN = [
   { title: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
   { title: "Program Roadmap", to: "/roadmap", icon: Map },
   { title: "Month 1 · Fundamentals", to: "/month/1", icon: BookOpen },
+  { title: "Enterprise Map", to: "/enterprise", icon: Building2 },
+  { title: "Knowledge Graph", to: "/graph", icon: Network },
 ];
 
 const PRACTICE = [
+  { title: "Daily Mission", to: "/daily", icon: AlertTriangle },
   { title: "Virtual Labs", to: "/labs", icon: Terminal },
   { title: "Assessments", to: "/assessments", icon: ClipboardCheck },
   { title: "Resources", to: "/resources", icon: Library },
@@ -44,6 +52,8 @@ const PRACTICE = [
 ];
 
 const YOU = [
+  { title: "Skill Tree", to: "/skills", icon: Zap },
+  { title: "Career Ladder", to: "/career", icon: Briefcase },
   { title: "Certificates", to: "/certificates", icon: Award },
   { title: "Profile", to: "/profile", icon: User },
 ];

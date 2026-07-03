@@ -7,6 +7,7 @@ import {
   Briefcase, PlayCircle, CheckCircle2, XCircle,
 } from "lucide-react";
 import { getSession, MONTH_1, type Session } from "@/content/month1";
+import { awardXp } from "@/lib/xp";
 import { markSessionStarted, updateSessionProgress } from "@/lib/progress-hooks";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -68,9 +69,11 @@ function SessionPage() {
 
   async function completeMission() {
     await updateSessionProgress(session.slug, 100);
+    await awardXp("mission_complete");
     qc.invalidateQueries({ queryKey: ["my-progress"] });
+    qc.invalidateQueries({ queryKey: ["my-xp"] });
     setCompleted(true);
-    toast.success(`Mission ${String(session.number).padStart(2, "0")} cleared.`);
+    toast.success(`Mission ${String(session.number).padStart(2, "0")} cleared. +50 XP`);
   }
 
   return (
