@@ -44,6 +44,42 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_mission_attempts: {
+        Row: {
+          ai_feedback: string | null
+          created_at: string
+          findings: Json
+          id: string
+          mission_date: string
+          mission_id: string
+          score: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_feedback?: string | null
+          created_at?: string
+          findings?: Json
+          id?: string
+          mission_date?: string
+          mission_id: string
+          score?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_feedback?: string | null
+          created_at?: string
+          findings?: Json
+          id?: string
+          mission_date?: string
+          mission_id?: string
+          score?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -131,6 +167,27 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_unlocks: {
+        Row: {
+          id: string
+          skill_key: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          skill_key: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          skill_key?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_progress: {
         Row: {
           completed_at: string | null
@@ -182,6 +239,36 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_xp: {
+        Row: {
+          badges: Json
+          last_active: string | null
+          level: number
+          streak_days: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          badges?: Json
+          last_active?: string | null
+          level?: number
+          streak_days?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          badges?: Json
+          last_active?: string | null
+          level?: number
+          streak_days?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
         }
         Relationships: []
       }

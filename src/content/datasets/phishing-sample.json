@@ -1,0 +1,18 @@
+{
+  "source": "Email Gateway Quarantine · sample",
+  "sample": {
+    "from_header": "\"Wealth Ops <wealth-ops@gfc.com>\"",
+    "envelope_from": "wealth-ops@gfc-secure.co",
+    "reply_to": "no-reply@gfc-secure.co",
+    "spf": "fail",
+    "dkim": "none",
+    "dmarc": "fail",
+    "subject": "URGENT: Client portfolio review required today",
+    "body_url": "https://portal-gfc-secure.co/login?ref=review",
+    "body_snippet": "Please re-authenticate to review the flagged portfolio. Link expires in 20 minutes.",
+    "recipients": 214,
+    "clicked": 3,
+    "credential_submitted_users": ["e.morris"]
+  },
+  "notes": "Display name spoofs internal ops. Envelope from is a lookalike domain (gfc-secure.co)."
+}

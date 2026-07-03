@@ -1,0 +1,11 @@
+{
+  "source": "Zeek conn.log + auditd · payments-app-07.gfc.internal",
+  "columns": ["time", "pid", "process", "user", "dst_ip", "dst_port", "bytes_out", "persistence"],
+  "rows": [
+    ["01:14:22", 8821, "/tmp/.xk/updater", "www-data", "185.94.111.1", 443, 2144, "cron:@reboot"],
+    ["01:19:22", 8821, "/tmp/.xk/updater", "www-data", "185.94.111.1", 443, 4180, "-"],
+    ["01:24:22", 8821, "/tmp/.xk/updater", "www-data", "185.94.111.1", 443, 3922, "-"],
+    ["01:29:22", 8821, "/tmp/.xk/updater", "www-data", "185.94.111.1", 443, 4088, "-"]
+  ],
+  "notes": "Binary running from /tmp under a service account, beaconing every 5m to a hosting AS. Cron @reboot ensures persistence."
+}
