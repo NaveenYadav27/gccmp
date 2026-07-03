@@ -5,35 +5,68 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescri
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { askMentor } from "@/lib/ai-mentor.functions";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { askMentor, type Persona, type Mode } from "@/lib/ai-mentor.functions";
 import { cn } from "@/lib/utils";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+const PERSONA_LABELS: Record<Persona, string> = {
+  trainer: "Cyber Trainer",
+  soc: "SOC Analyst",
+  network: "Network Engineer",
+  linux: "Linux Admin",
+  windows: "Windows / AD",
+  cloud: "Cloud Architect",
+  ciso: "CISO",
+  hiring: "Hiring Manager",
+  interviewer: "Interviewer",
+};
+
+const QUICK: { mode: Mode; label: string }[] = [
+  { mode: "explain", label: "Explain" },
+  { mode: "simplify", label: "Simplify" },
+  { mode: "deepdive", label: "Deep dive" },
+  { mode: "enterprise", label: "Enterprise view" },
+  { mode: "quiz", label: "Quiz me" },
+  { mode: "flashcards", label: "Flashcards" },
+  { mode: "commands", label: "Commands" },
+  { mode: "interview", label: "Interview Qs" },
+  { mode: "career", label: "Career" },
+  { mode: "lab", label: "Lab help" },
+];
+
 export function AiMentorDrawer({ sessionContext }: { sessionContext?: string }) {
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<"beginner" | "engineer" | "soc">("engineer");
+  const [persona, setPersona] = useState<Persona>("trainer");
+  const [mode, setMode] = useState<Mode>("explain");
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const ask = useServerFn(askMentor);
 
-  async function send(e: React.FormEvent) {
-    e.preventDefault();
-    if (!input.trim() || busy) return;
-    const q = input.trim();
-    setInput("");
-    setMessages((m) => [...m, { role: "user", content: q }]);
+  async function sendWith(question: string, forcedMode?: Mode) {
+    if (!question.trim() || busy) return;
+    const useMode = forcedMode ?? mode;
+    setMessages((m) => [...m, { role: "user", content: question }]);
     setBusy(true);
     try {
-      const res = await ask({ data: { question: q, mode, sessionContext } });
+      const res = await ask({ data: { question, persona, mode: useMode, sessionContext } });
       setMessages((m) => [...m, { role: "assistant", content: res.text }]);
-    } catch (err) {
+    } catch {
       setMessages((m) => [...m, { role: "assistant", content: "Something went wrong reaching the mentor." }]);
     } finally {
       setBusy(false);
     }
+  }
+
+  async function send(e: React.FormEvent) {
+    e.preventDefault();
+    const q = input.trim();
+    if (!q) return;
+    setInput("");
+    await sendWith(q);
   }
 
   return (
@@ -51,31 +84,68 @@ export function AiMentorDrawer({ sessionContext }: { sessionContext?: string }) 
               <Bot className="h-4 w-4 text-cyber-foreground" />
             </div>
             Sentinel · AI Mentor
+            <Badge variant="outline" className="ml-auto text-[10px]">{PERSONA_LABELS[persona]}</Badge>
           </SheetTitle>
           <SheetDescription className="text-xs">
-            Explain concepts, generate notes, run through scenarios.
+            Multi-persona mentor inside Global Financial Corp.
           </SheetDescription>
-          <Tabs value={mode} onValueChange={(v) => setMode(v as typeof mode)} className="pt-2">
-            <TabsList className="grid w-full grid-cols-3 bg-surface-2">
-              <TabsTrigger value="beginner" className="text-xs">Beginner</TabsTrigger>
-              <TabsTrigger value="engineer" className="text-xs">Engineer</TabsTrigger>
-              <TabsTrigger value="soc" className="text-xs">SOC</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div className="pt-2">
+            <Select value={persona} onValueChange={(v) => setPersona(v as Persona)}>
+              <SelectTrigger className="h-8 bg-surface-2 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {(Object.keys(PERSONA_LABELS) as Persona[]).map((p) => (
+                  <SelectItem key={p} value={p}>{PERSONA_LABELS[p]}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="scrollbar-none flex gap-1 overflow-x-auto pt-2">
+            {QUICK.map((q) => (
+              <button
+                key={q.mode}
+                onClick={() => setMode(q.mode)}
+                className={cn(
+                  "whitespace-nowrap rounded-md border px-2 py-1 text-[10px] font-medium transition-colors",
+                  mode === q.mode
+                    ? "border-cyber/60 bg-cyber/10 text-cyber"
+                    : "border-border/50 bg-surface-1 text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {q.label}
+              </button>
+            ))}
+          </div>
         </SheetHeader>
 
         <ScrollArea className="flex-1 px-5 py-4">
           {messages.length === 0 ? (
-            <div className="mt-8 space-y-4 text-center">
+            <div className="mt-6 space-y-4 text-center">
               <div className="cyber-gradient mx-auto flex h-14 w-14 items-center justify-center rounded-2xl shadow-glow">
                 <Sparkles className="h-6 w-6 text-cyber-foreground" />
               </div>
               <div>
                 <div className="font-semibold">Ready to help.</div>
                 <p className="mx-auto mt-1 max-w-xs text-xs text-muted-foreground">
-                  Try: "Explain the CIA triad", "Give me a mnemonic for OSI",
-                  or paste an alert for triage.
+                  Pick a persona + mode, then ask. Try "Kerberoasting in GFC" as CISO with Enterprise view.
                 </p>
+              </div>
+              <div className="mx-auto grid max-w-xs grid-cols-2 gap-2 pt-2">
+                {[
+                  "Explain the CIA triad",
+                  "Give me 5 flashcards on DNS",
+                  "Interview questions for SOC L1",
+                  "How does Kerberos work in GFC?",
+                ].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => sendWith(s)}
+                    className="rounded-md border border-border/50 bg-surface-1 p-2 text-left text-[11px] hover:border-cyber/40"
+                  >
+                    {s}
+                  </button>
+                ))}
               </div>
             </div>
           ) : (
@@ -84,7 +154,7 @@ export function AiMentorDrawer({ sessionContext }: { sessionContext?: string }) 
                 <div key={i} className={cn("flex gap-3", m.role === "user" && "flex-row-reverse")}>
                   <div className={cn(
                     "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg",
-                    m.role === "user" ? "bg-primary" : "cyber-gradient"
+                    m.role === "user" ? "bg-primary" : "cyber-gradient",
                   )}>
                     {m.role === "user" ? <User className="h-3.5 w-3.5 text-primary-foreground" /> : <Bot className="h-3.5 w-3.5 text-cyber-foreground" />}
                   </div>
@@ -92,7 +162,7 @@ export function AiMentorDrawer({ sessionContext }: { sessionContext?: string }) 
                     "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
                     m.role === "user"
                       ? "bg-primary text-primary-foreground"
-                      : "border border-border/60 bg-surface-1 text-foreground"
+                      : "border border-border/60 bg-surface-1 text-foreground",
                   )}>
                     {m.content}
                   </div>
@@ -113,7 +183,7 @@ export function AiMentorDrawer({ sessionContext }: { sessionContext?: string }) 
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask anything about this session…"
+              placeholder={`Ask as ${PERSONA_LABELS[persona]}…`}
               className="min-h-[44px] resize-none bg-surface-1"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
