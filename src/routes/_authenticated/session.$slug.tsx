@@ -43,7 +43,7 @@ const SECTIONS = [
 ];
 
 function SessionPage() {
-  const { session } = Route.useLoaderData();
+  const { session } = Route.useLoaderData() as { session: Session };
   const qc = useQueryClient();
   const idx = MONTH_1.findIndex((s) => s.slug === session.slug);
   const prev = idx > 0 ? MONTH_1[idx - 1] : null;
