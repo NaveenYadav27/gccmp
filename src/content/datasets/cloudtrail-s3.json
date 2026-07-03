@@ -1,0 +1,12 @@
+{
+  "source": "AWS CloudTrail · us-east-1",
+  "columns": ["eventTime", "eventName", "userIdentity", "sourceIP", "resource", "requestParameters"],
+  "rows": [
+    ["22:00:41Z", "GetBucketAcl", "AIDA...:svc-report-gen", "10.4.2.19", "gfc-trading-reports", "-"],
+    ["22:01:02Z", "PutObject", "AIDA...:svc-report-gen", "10.4.2.19", "gfc-trading-reports/eod-2026-07-02.pdf", "-"],
+    ["22:02:44Z", "PutBucketAcl", "AIDA...:d.tan", "185.220.101.7", "gfc-trading-reports", "acl=public-read"],
+    ["22:02:59Z", "GetObject", "-", "45.61.184.22", "gfc-trading-reports/eod-2026-07-02.pdf", "anonymous"],
+    ["22:03:14Z", "GetObject", "-", "45.61.184.22", "gfc-trading-reports/eod-2026-07-01.pdf", "anonymous"]
+  ],
+  "notes": "PutBucketAcl by an IAM user from an external IP flipped the bucket public. Anonymous reads followed within seconds."
+}

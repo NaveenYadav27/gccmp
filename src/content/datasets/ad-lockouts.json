@@ -1,0 +1,17 @@
+{
+  "source": "Windows Security Event Log · DC01.gfc.local",
+  "columns": ["time", "EventID", "TargetUser", "LogonType", "SourceIP", "Workstation", "Status"],
+  "rows": [
+    ["07:11:02", 4625, "s.tan", 3, "203.0.113.44", "-", "0xC000006A"],
+    ["07:11:04", 4625, "j.lee", 3, "203.0.113.44", "-", "0xC000006A"],
+    ["07:11:06", 4625, "m.kaur", 3, "203.0.113.44", "-", "0xC000006A"],
+    ["07:11:09", 4740, "s.tan", 0, "203.0.113.44", "DC01", "Locked"],
+    ["07:11:12", 4625, "p.chan", 3, "203.0.113.44", "-", "0xC000006A"],
+    ["07:11:15", 4740, "j.lee", 0, "203.0.113.44", "DC01", "Locked"],
+    ["07:11:18", 4625, "r.singh", 3, "203.0.113.44", "-", "0xC000006A"],
+    ["07:11:21", 4740, "m.kaur", 0, "203.0.113.44", "DC01", "Locked"],
+    ["07:12:02", 4625, "a.wong", 3, "203.0.113.44", "-", "0xC000006A"],
+    ["07:12:05", 4740, "p.chan", 0, "203.0.113.44", "DC01", "Locked"]
+  ],
+  "notes": "LogonType 3 = Network. External IP means the attempts are hitting an internet-exposed endpoint (VPN/OWA)."
+}
