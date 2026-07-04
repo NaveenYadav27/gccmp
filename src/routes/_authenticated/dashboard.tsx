@@ -37,7 +37,7 @@ function DashboardPage() {
         <div className="relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="space-y-2">
             <div className="text-xs font-medium uppercase tracking-[0.2em] text-cyber">
-              Cohort 2026 · Day {Math.max(1, Math.min(30, summary.completed * 4))}
+              Mission Control · Cohort 2026 · Day {Math.max(1, Math.min(30, summary.completed * 4))}
             </div>
             <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
               Welcome back, <span className="cyber-text">{profile?.display_name ?? "analyst"}</span>.
