@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_authenticated/foundation/$topic")({
 });
 
 function FoundationTopicPage() {
-  const { topic } = Route.useLoaderData();
+  const { topic } = Route.useLoaderData() as { topic: (typeof FOUNDATION_TOPICS)[number] };
   const idx = FOUNDATION_TOPICS.findIndex((t) => t.slug === topic.slug);
   const prev = idx > 0 ? FOUNDATION_TOPICS[idx - 1] : undefined;
   const next = idx < FOUNDATION_TOPICS.length - 1 ? FOUNDATION_TOPICS[idx + 1] : undefined;

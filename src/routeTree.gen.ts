@@ -29,6 +29,7 @@ import { Route as AuthenticatedCareerRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedAssessmentsRouteImport } from './routes/_authenticated/assessments'
 import { Route as AuthenticatedSessionSlugRouteImport } from './routes/_authenticated/session.$slug'
 import { Route as AuthenticatedMonthNumberRouteImport } from './routes/_authenticated/month.$number'
+import { Route as AuthenticatedFoundationTopicRouteImport } from './routes/_authenticated/foundation.$topic'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -133,6 +134,12 @@ const AuthenticatedMonthNumberRoute =
     path: '/month/$number',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFoundationTopicRoute =
+  AuthenticatedFoundationTopicRouteImport.update({
+    id: '/$topic',
+    path: '/$topic',
+    getParentRoute: () => AuthenticatedFoundationRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -143,7 +150,7 @@ export interface FileRoutesByFullPath {
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enterprise': typeof AuthenticatedEnterpriseRoute
-  '/foundation': typeof AuthenticatedFoundationRoute
+  '/foundation': typeof AuthenticatedFoundationRouteWithChildren
   '/graph': typeof AuthenticatedGraphRoute
   '/instructor': typeof AuthenticatedInstructorRoute
   '/labs': typeof AuthenticatedLabsRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof AuthenticatedResourcesRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/skills': typeof AuthenticatedSkillsRoute
+  '/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/month/$number': typeof AuthenticatedMonthNumberRoute
   '/session/$slug': typeof AuthenticatedSessionSlugRoute
 }
@@ -164,7 +172,7 @@ export interface FileRoutesByTo {
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enterprise': typeof AuthenticatedEnterpriseRoute
-  '/foundation': typeof AuthenticatedFoundationRoute
+  '/foundation': typeof AuthenticatedFoundationRouteWithChildren
   '/graph': typeof AuthenticatedGraphRoute
   '/instructor': typeof AuthenticatedInstructorRoute
   '/labs': typeof AuthenticatedLabsRoute
@@ -173,6 +181,7 @@ export interface FileRoutesByTo {
   '/resources': typeof AuthenticatedResourcesRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/skills': typeof AuthenticatedSkillsRoute
+  '/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/month/$number': typeof AuthenticatedMonthNumberRoute
   '/session/$slug': typeof AuthenticatedSessionSlugRoute
 }
@@ -187,7 +196,7 @@ export interface FileRoutesById {
   '/_authenticated/daily': typeof AuthenticatedDailyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/enterprise': typeof AuthenticatedEnterpriseRoute
-  '/_authenticated/foundation': typeof AuthenticatedFoundationRoute
+  '/_authenticated/foundation': typeof AuthenticatedFoundationRouteWithChildren
   '/_authenticated/graph': typeof AuthenticatedGraphRoute
   '/_authenticated/instructor': typeof AuthenticatedInstructorRoute
   '/_authenticated/labs': typeof AuthenticatedLabsRoute
@@ -196,6 +205,7 @@ export interface FileRoutesById {
   '/_authenticated/resources': typeof AuthenticatedResourcesRoute
   '/_authenticated/roadmap': typeof AuthenticatedRoadmapRoute
   '/_authenticated/skills': typeof AuthenticatedSkillsRoute
+  '/_authenticated/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/_authenticated/month/$number': typeof AuthenticatedMonthNumberRoute
   '/_authenticated/session/$slug': typeof AuthenticatedSessionSlugRoute
 }
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/roadmap'
     | '/skills'
+    | '/foundation/$topic'
     | '/month/$number'
     | '/session/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -240,6 +251,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/roadmap'
     | '/skills'
+    | '/foundation/$topic'
     | '/month/$number'
     | '/session/$slug'
   id:
@@ -262,6 +274,7 @@ export interface FileRouteTypes {
     | '/_authenticated/resources'
     | '/_authenticated/roadmap'
     | '/_authenticated/skills'
+    | '/_authenticated/foundation/$topic'
     | '/_authenticated/month/$number'
     | '/_authenticated/session/$slug'
   fileRoutesById: FileRoutesById
@@ -414,8 +427,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMonthNumberRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/foundation/$topic': {
+      id: '/_authenticated/foundation/$topic'
+      path: '/$topic'
+      fullPath: '/foundation/$topic'
+      preLoaderRoute: typeof AuthenticatedFoundationTopicRouteImport
+      parentRoute: typeof AuthenticatedFoundationRoute
+    }
   }
 }
+
+interface AuthenticatedFoundationRouteChildren {
+  AuthenticatedFoundationTopicRoute: typeof AuthenticatedFoundationTopicRoute
+}
+
+const AuthenticatedFoundationRouteChildren: AuthenticatedFoundationRouteChildren =
+  {
+    AuthenticatedFoundationTopicRoute: AuthenticatedFoundationTopicRoute,
+  }
+
+const AuthenticatedFoundationRouteWithChildren =
+  AuthenticatedFoundationRoute._addFileChildren(
+    AuthenticatedFoundationRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAssessmentsRoute: typeof AuthenticatedAssessmentsRoute
@@ -424,7 +458,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDailyRoute: typeof AuthenticatedDailyRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEnterpriseRoute: typeof AuthenticatedEnterpriseRoute
-  AuthenticatedFoundationRoute: typeof AuthenticatedFoundationRoute
+  AuthenticatedFoundationRoute: typeof AuthenticatedFoundationRouteWithChildren
   AuthenticatedGraphRoute: typeof AuthenticatedGraphRoute
   AuthenticatedInstructorRoute: typeof AuthenticatedInstructorRoute
   AuthenticatedLabsRoute: typeof AuthenticatedLabsRoute
@@ -444,7 +478,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDailyRoute: AuthenticatedDailyRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEnterpriseRoute: AuthenticatedEnterpriseRoute,
-  AuthenticatedFoundationRoute: AuthenticatedFoundationRoute,
+  AuthenticatedFoundationRoute: AuthenticatedFoundationRouteWithChildren,
   AuthenticatedGraphRoute: AuthenticatedGraphRoute,
   AuthenticatedInstructorRoute: AuthenticatedInstructorRoute,
   AuthenticatedLabsRoute: AuthenticatedLabsRoute,
