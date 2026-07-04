@@ -25,6 +25,7 @@ import { Route as AuthenticatedEnterpriseRouteImport } from './routes/_authentic
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDailyRouteImport } from './routes/_authenticated/daily'
 import { Route as AuthenticatedCertificatesRouteImport } from './routes/_authenticated/certificates'
+import { Route as AuthenticatedCehv13RouteImport } from './routes/_authenticated/cehv13'
 import { Route as AuthenticatedCareerRouteImport } from './routes/_authenticated/career'
 import { Route as AuthenticatedAssessmentsRouteImport } from './routes/_authenticated/assessments'
 import { Route as AuthenticatedSessionSlugRouteImport } from './routes/_authenticated/session.$slug'
@@ -111,6 +112,11 @@ const AuthenticatedCertificatesRoute =
     path: '/certificates',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCehv13Route = AuthenticatedCehv13RouteImport.update({
+  id: '/cehv13',
+  path: '/cehv13',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCareerRoute = AuthenticatedCareerRouteImport.update({
   id: '/career',
   path: '/career',
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/career': typeof AuthenticatedCareerRoute
+  '/cehv13': typeof AuthenticatedCehv13Route
   '/certificates': typeof AuthenticatedCertificatesRoute
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/career': typeof AuthenticatedCareerRoute
+  '/cehv13': typeof AuthenticatedCehv13Route
   '/certificates': typeof AuthenticatedCertificatesRoute
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -192,6 +200,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/assessments': typeof AuthenticatedAssessmentsRoute
   '/_authenticated/career': typeof AuthenticatedCareerRoute
+  '/_authenticated/cehv13': typeof AuthenticatedCehv13Route
   '/_authenticated/certificates': typeof AuthenticatedCertificatesRoute
   '/_authenticated/daily': typeof AuthenticatedDailyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/assessments'
     | '/career'
+    | '/cehv13'
     | '/certificates'
     | '/daily'
     | '/dashboard'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/assessments'
     | '/career'
+    | '/cehv13'
     | '/certificates'
     | '/daily'
     | '/dashboard'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/assessments'
     | '/_authenticated/career'
+    | '/_authenticated/cehv13'
     | '/_authenticated/certificates'
     | '/_authenticated/daily'
     | '/_authenticated/dashboard'
@@ -399,6 +411,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCertificatesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/cehv13': {
+      id: '/_authenticated/cehv13'
+      path: '/cehv13'
+      fullPath: '/cehv13'
+      preLoaderRoute: typeof AuthenticatedCehv13RouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/career': {
       id: '/_authenticated/career'
       path: '/career'
@@ -454,6 +473,7 @@ const AuthenticatedFoundationRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAssessmentsRoute: typeof AuthenticatedAssessmentsRoute
   AuthenticatedCareerRoute: typeof AuthenticatedCareerRoute
+  AuthenticatedCehv13Route: typeof AuthenticatedCehv13Route
   AuthenticatedCertificatesRoute: typeof AuthenticatedCertificatesRoute
   AuthenticatedDailyRoute: typeof AuthenticatedDailyRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -474,6 +494,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAssessmentsRoute: AuthenticatedAssessmentsRoute,
   AuthenticatedCareerRoute: AuthenticatedCareerRoute,
+  AuthenticatedCehv13Route: AuthenticatedCehv13Route,
   AuthenticatedCertificatesRoute: AuthenticatedCertificatesRoute,
   AuthenticatedDailyRoute: AuthenticatedDailyRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
