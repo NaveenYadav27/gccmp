@@ -20,14 +20,18 @@ import { Route as AuthenticatedNotesRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedLabsRouteImport } from './routes/_authenticated/labs'
 import { Route as AuthenticatedInstructorRouteImport } from './routes/_authenticated/instructor'
 import { Route as AuthenticatedGraphRouteImport } from './routes/_authenticated/graph'
+import { Route as AuthenticatedFoundationRouteImport } from './routes/_authenticated/foundation'
 import { Route as AuthenticatedEnterpriseRouteImport } from './routes/_authenticated/enterprise'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDailyRouteImport } from './routes/_authenticated/daily'
 import { Route as AuthenticatedCertificatesRouteImport } from './routes/_authenticated/certificates'
+import { Route as AuthenticatedCehv13RouteImport } from './routes/_authenticated/cehv13'
 import { Route as AuthenticatedCareerRouteImport } from './routes/_authenticated/career'
 import { Route as AuthenticatedAssessmentsRouteImport } from './routes/_authenticated/assessments'
 import { Route as AuthenticatedSessionSlugRouteImport } from './routes/_authenticated/session.$slug'
 import { Route as AuthenticatedMonthNumberRouteImport } from './routes/_authenticated/month.$number'
+import { Route as AuthenticatedFoundationTopicRouteImport } from './routes/_authenticated/foundation.$topic'
+import { Route as AuthenticatedCehv13ModuleRouteImport } from './routes/_authenticated/cehv13.$module'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -83,6 +87,11 @@ const AuthenticatedGraphRoute = AuthenticatedGraphRouteImport.update({
   path: '/graph',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFoundationRoute = AuthenticatedFoundationRouteImport.update({
+  id: '/foundation',
+  path: '/foundation',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedEnterpriseRoute = AuthenticatedEnterpriseRouteImport.update({
   id: '/enterprise',
   path: '/enterprise',
@@ -104,6 +113,11 @@ const AuthenticatedCertificatesRoute =
     path: '/certificates',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCehv13Route = AuthenticatedCehv13RouteImport.update({
+  id: '/cehv13',
+  path: '/cehv13',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCareerRoute = AuthenticatedCareerRouteImport.update({
   id: '/career',
   path: '/career',
@@ -127,16 +141,30 @@ const AuthenticatedMonthNumberRoute =
     path: '/month/$number',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFoundationTopicRoute =
+  AuthenticatedFoundationTopicRouteImport.update({
+    id: '/$topic',
+    path: '/$topic',
+    getParentRoute: () => AuthenticatedFoundationRoute,
+  } as any)
+const AuthenticatedCehv13ModuleRoute =
+  AuthenticatedCehv13ModuleRouteImport.update({
+    id: '/$module',
+    path: '/$module',
+    getParentRoute: () => AuthenticatedCehv13Route,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/career': typeof AuthenticatedCareerRoute
+  '/cehv13': typeof AuthenticatedCehv13RouteWithChildren
   '/certificates': typeof AuthenticatedCertificatesRoute
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enterprise': typeof AuthenticatedEnterpriseRoute
+  '/foundation': typeof AuthenticatedFoundationRouteWithChildren
   '/graph': typeof AuthenticatedGraphRoute
   '/instructor': typeof AuthenticatedInstructorRoute
   '/labs': typeof AuthenticatedLabsRoute
@@ -145,6 +173,8 @@ export interface FileRoutesByFullPath {
   '/resources': typeof AuthenticatedResourcesRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/skills': typeof AuthenticatedSkillsRoute
+  '/cehv13/$module': typeof AuthenticatedCehv13ModuleRoute
+  '/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/month/$number': typeof AuthenticatedMonthNumberRoute
   '/session/$slug': typeof AuthenticatedSessionSlugRoute
 }
@@ -153,10 +183,12 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/career': typeof AuthenticatedCareerRoute
+  '/cehv13': typeof AuthenticatedCehv13RouteWithChildren
   '/certificates': typeof AuthenticatedCertificatesRoute
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enterprise': typeof AuthenticatedEnterpriseRoute
+  '/foundation': typeof AuthenticatedFoundationRouteWithChildren
   '/graph': typeof AuthenticatedGraphRoute
   '/instructor': typeof AuthenticatedInstructorRoute
   '/labs': typeof AuthenticatedLabsRoute
@@ -165,6 +197,8 @@ export interface FileRoutesByTo {
   '/resources': typeof AuthenticatedResourcesRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/skills': typeof AuthenticatedSkillsRoute
+  '/cehv13/$module': typeof AuthenticatedCehv13ModuleRoute
+  '/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/month/$number': typeof AuthenticatedMonthNumberRoute
   '/session/$slug': typeof AuthenticatedSessionSlugRoute
 }
@@ -175,10 +209,12 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/assessments': typeof AuthenticatedAssessmentsRoute
   '/_authenticated/career': typeof AuthenticatedCareerRoute
+  '/_authenticated/cehv13': typeof AuthenticatedCehv13RouteWithChildren
   '/_authenticated/certificates': typeof AuthenticatedCertificatesRoute
   '/_authenticated/daily': typeof AuthenticatedDailyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/enterprise': typeof AuthenticatedEnterpriseRoute
+  '/_authenticated/foundation': typeof AuthenticatedFoundationRouteWithChildren
   '/_authenticated/graph': typeof AuthenticatedGraphRoute
   '/_authenticated/instructor': typeof AuthenticatedInstructorRoute
   '/_authenticated/labs': typeof AuthenticatedLabsRoute
@@ -187,6 +223,8 @@ export interface FileRoutesById {
   '/_authenticated/resources': typeof AuthenticatedResourcesRoute
   '/_authenticated/roadmap': typeof AuthenticatedRoadmapRoute
   '/_authenticated/skills': typeof AuthenticatedSkillsRoute
+  '/_authenticated/cehv13/$module': typeof AuthenticatedCehv13ModuleRoute
+  '/_authenticated/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/_authenticated/month/$number': typeof AuthenticatedMonthNumberRoute
   '/_authenticated/session/$slug': typeof AuthenticatedSessionSlugRoute
 }
@@ -197,10 +235,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/assessments'
     | '/career'
+    | '/cehv13'
     | '/certificates'
     | '/daily'
     | '/dashboard'
     | '/enterprise'
+    | '/foundation'
     | '/graph'
     | '/instructor'
     | '/labs'
@@ -209,6 +249,8 @@ export interface FileRouteTypes {
     | '/resources'
     | '/roadmap'
     | '/skills'
+    | '/cehv13/$module'
+    | '/foundation/$topic'
     | '/month/$number'
     | '/session/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -217,10 +259,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/assessments'
     | '/career'
+    | '/cehv13'
     | '/certificates'
     | '/daily'
     | '/dashboard'
     | '/enterprise'
+    | '/foundation'
     | '/graph'
     | '/instructor'
     | '/labs'
@@ -229,6 +273,8 @@ export interface FileRouteTypes {
     | '/resources'
     | '/roadmap'
     | '/skills'
+    | '/cehv13/$module'
+    | '/foundation/$topic'
     | '/month/$number'
     | '/session/$slug'
   id:
@@ -238,10 +284,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/assessments'
     | '/_authenticated/career'
+    | '/_authenticated/cehv13'
     | '/_authenticated/certificates'
     | '/_authenticated/daily'
     | '/_authenticated/dashboard'
     | '/_authenticated/enterprise'
+    | '/_authenticated/foundation'
     | '/_authenticated/graph'
     | '/_authenticated/instructor'
     | '/_authenticated/labs'
@@ -250,6 +298,8 @@ export interface FileRouteTypes {
     | '/_authenticated/resources'
     | '/_authenticated/roadmap'
     | '/_authenticated/skills'
+    | '/_authenticated/cehv13/$module'
+    | '/_authenticated/foundation/$topic'
     | '/_authenticated/month/$number'
     | '/_authenticated/session/$slug'
   fileRoutesById: FileRoutesById
@@ -339,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGraphRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/foundation': {
+      id: '/_authenticated/foundation'
+      path: '/foundation'
+      fullPath: '/foundation'
+      preLoaderRoute: typeof AuthenticatedFoundationRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/enterprise': {
       id: '/_authenticated/enterprise'
       path: '/enterprise'
@@ -365,6 +422,13 @@ declare module '@tanstack/react-router' {
       path: '/certificates'
       fullPath: '/certificates'
       preLoaderRoute: typeof AuthenticatedCertificatesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cehv13': {
+      id: '/_authenticated/cehv13'
+      path: '/cehv13'
+      fullPath: '/cehv13'
+      preLoaderRoute: typeof AuthenticatedCehv13RouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/career': {
@@ -395,16 +459,57 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMonthNumberRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/foundation/$topic': {
+      id: '/_authenticated/foundation/$topic'
+      path: '/$topic'
+      fullPath: '/foundation/$topic'
+      preLoaderRoute: typeof AuthenticatedFoundationTopicRouteImport
+      parentRoute: typeof AuthenticatedFoundationRoute
+    }
+    '/_authenticated/cehv13/$module': {
+      id: '/_authenticated/cehv13/$module'
+      path: '/$module'
+      fullPath: '/cehv13/$module'
+      preLoaderRoute: typeof AuthenticatedCehv13ModuleRouteImport
+      parentRoute: typeof AuthenticatedCehv13Route
+    }
   }
 }
+
+interface AuthenticatedCehv13RouteChildren {
+  AuthenticatedCehv13ModuleRoute: typeof AuthenticatedCehv13ModuleRoute
+}
+
+const AuthenticatedCehv13RouteChildren: AuthenticatedCehv13RouteChildren = {
+  AuthenticatedCehv13ModuleRoute: AuthenticatedCehv13ModuleRoute,
+}
+
+const AuthenticatedCehv13RouteWithChildren =
+  AuthenticatedCehv13Route._addFileChildren(AuthenticatedCehv13RouteChildren)
+
+interface AuthenticatedFoundationRouteChildren {
+  AuthenticatedFoundationTopicRoute: typeof AuthenticatedFoundationTopicRoute
+}
+
+const AuthenticatedFoundationRouteChildren: AuthenticatedFoundationRouteChildren =
+  {
+    AuthenticatedFoundationTopicRoute: AuthenticatedFoundationTopicRoute,
+  }
+
+const AuthenticatedFoundationRouteWithChildren =
+  AuthenticatedFoundationRoute._addFileChildren(
+    AuthenticatedFoundationRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAssessmentsRoute: typeof AuthenticatedAssessmentsRoute
   AuthenticatedCareerRoute: typeof AuthenticatedCareerRoute
+  AuthenticatedCehv13Route: typeof AuthenticatedCehv13RouteWithChildren
   AuthenticatedCertificatesRoute: typeof AuthenticatedCertificatesRoute
   AuthenticatedDailyRoute: typeof AuthenticatedDailyRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEnterpriseRoute: typeof AuthenticatedEnterpriseRoute
+  AuthenticatedFoundationRoute: typeof AuthenticatedFoundationRouteWithChildren
   AuthenticatedGraphRoute: typeof AuthenticatedGraphRoute
   AuthenticatedInstructorRoute: typeof AuthenticatedInstructorRoute
   AuthenticatedLabsRoute: typeof AuthenticatedLabsRoute
@@ -420,10 +525,12 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAssessmentsRoute: AuthenticatedAssessmentsRoute,
   AuthenticatedCareerRoute: AuthenticatedCareerRoute,
+  AuthenticatedCehv13Route: AuthenticatedCehv13RouteWithChildren,
   AuthenticatedCertificatesRoute: AuthenticatedCertificatesRoute,
   AuthenticatedDailyRoute: AuthenticatedDailyRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEnterpriseRoute: AuthenticatedEnterpriseRoute,
+  AuthenticatedFoundationRoute: AuthenticatedFoundationRouteWithChildren,
   AuthenticatedGraphRoute: AuthenticatedGraphRoute,
   AuthenticatedInstructorRoute: AuthenticatedInstructorRoute,
   AuthenticatedLabsRoute: AuthenticatedLabsRoute,
@@ -447,13 +554,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
