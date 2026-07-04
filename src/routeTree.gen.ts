@@ -20,6 +20,7 @@ import { Route as AuthenticatedNotesRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedLabsRouteImport } from './routes/_authenticated/labs'
 import { Route as AuthenticatedInstructorRouteImport } from './routes/_authenticated/instructor'
 import { Route as AuthenticatedGraphRouteImport } from './routes/_authenticated/graph'
+import { Route as AuthenticatedFoundationRouteImport } from './routes/_authenticated/foundation'
 import { Route as AuthenticatedEnterpriseRouteImport } from './routes/_authenticated/enterprise'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDailyRouteImport } from './routes/_authenticated/daily'
@@ -83,6 +84,11 @@ const AuthenticatedGraphRoute = AuthenticatedGraphRouteImport.update({
   path: '/graph',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFoundationRoute = AuthenticatedFoundationRouteImport.update({
+  id: '/foundation',
+  path: '/foundation',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedEnterpriseRoute = AuthenticatedEnterpriseRouteImport.update({
   id: '/enterprise',
   path: '/enterprise',
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enterprise': typeof AuthenticatedEnterpriseRoute
+  '/foundation': typeof AuthenticatedFoundationRoute
   '/graph': typeof AuthenticatedGraphRoute
   '/instructor': typeof AuthenticatedInstructorRoute
   '/labs': typeof AuthenticatedLabsRoute
@@ -157,6 +164,7 @@ export interface FileRoutesByTo {
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enterprise': typeof AuthenticatedEnterpriseRoute
+  '/foundation': typeof AuthenticatedFoundationRoute
   '/graph': typeof AuthenticatedGraphRoute
   '/instructor': typeof AuthenticatedInstructorRoute
   '/labs': typeof AuthenticatedLabsRoute
@@ -179,6 +187,7 @@ export interface FileRoutesById {
   '/_authenticated/daily': typeof AuthenticatedDailyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/enterprise': typeof AuthenticatedEnterpriseRoute
+  '/_authenticated/foundation': typeof AuthenticatedFoundationRoute
   '/_authenticated/graph': typeof AuthenticatedGraphRoute
   '/_authenticated/instructor': typeof AuthenticatedInstructorRoute
   '/_authenticated/labs': typeof AuthenticatedLabsRoute
@@ -201,6 +210,7 @@ export interface FileRouteTypes {
     | '/daily'
     | '/dashboard'
     | '/enterprise'
+    | '/foundation'
     | '/graph'
     | '/instructor'
     | '/labs'
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/daily'
     | '/dashboard'
     | '/enterprise'
+    | '/foundation'
     | '/graph'
     | '/instructor'
     | '/labs'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/_authenticated/daily'
     | '/_authenticated/dashboard'
     | '/_authenticated/enterprise'
+    | '/_authenticated/foundation'
     | '/_authenticated/graph'
     | '/_authenticated/instructor'
     | '/_authenticated/labs'
@@ -339,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGraphRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/foundation': {
+      id: '/_authenticated/foundation'
+      path: '/foundation'
+      fullPath: '/foundation'
+      preLoaderRoute: typeof AuthenticatedFoundationRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/enterprise': {
       id: '/_authenticated/enterprise'
       path: '/enterprise'
@@ -405,6 +424,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDailyRoute: typeof AuthenticatedDailyRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEnterpriseRoute: typeof AuthenticatedEnterpriseRoute
+  AuthenticatedFoundationRoute: typeof AuthenticatedFoundationRoute
   AuthenticatedGraphRoute: typeof AuthenticatedGraphRoute
   AuthenticatedInstructorRoute: typeof AuthenticatedInstructorRoute
   AuthenticatedLabsRoute: typeof AuthenticatedLabsRoute
@@ -424,6 +444,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDailyRoute: AuthenticatedDailyRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEnterpriseRoute: AuthenticatedEnterpriseRoute,
+  AuthenticatedFoundationRoute: AuthenticatedFoundationRoute,
   AuthenticatedGraphRoute: AuthenticatedGraphRoute,
   AuthenticatedInstructorRoute: AuthenticatedInstructorRoute,
   AuthenticatedLabsRoute: AuthenticatedLabsRoute,
