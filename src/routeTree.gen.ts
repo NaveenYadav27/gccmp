@@ -31,6 +31,7 @@ import { Route as AuthenticatedAssessmentsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedSessionSlugRouteImport } from './routes/_authenticated/session.$slug'
 import { Route as AuthenticatedMonthNumberRouteImport } from './routes/_authenticated/month.$number'
 import { Route as AuthenticatedFoundationTopicRouteImport } from './routes/_authenticated/foundation.$topic'
+import { Route as AuthenticatedCehv13ModuleRouteImport } from './routes/_authenticated/cehv13.$module'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -146,13 +147,19 @@ const AuthenticatedFoundationTopicRoute =
     path: '/$topic',
     getParentRoute: () => AuthenticatedFoundationRoute,
   } as any)
+const AuthenticatedCehv13ModuleRoute =
+  AuthenticatedCehv13ModuleRouteImport.update({
+    id: '/$module',
+    path: '/$module',
+    getParentRoute: () => AuthenticatedCehv13Route,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/career': typeof AuthenticatedCareerRoute
-  '/cehv13': typeof AuthenticatedCehv13Route
+  '/cehv13': typeof AuthenticatedCehv13RouteWithChildren
   '/certificates': typeof AuthenticatedCertificatesRoute
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof AuthenticatedResourcesRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/skills': typeof AuthenticatedSkillsRoute
+  '/cehv13/$module': typeof AuthenticatedCehv13ModuleRoute
   '/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/month/$number': typeof AuthenticatedMonthNumberRoute
   '/session/$slug': typeof AuthenticatedSessionSlugRoute
@@ -175,7 +183,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/career': typeof AuthenticatedCareerRoute
-  '/cehv13': typeof AuthenticatedCehv13Route
+  '/cehv13': typeof AuthenticatedCehv13RouteWithChildren
   '/certificates': typeof AuthenticatedCertificatesRoute
   '/daily': typeof AuthenticatedDailyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -189,6 +197,7 @@ export interface FileRoutesByTo {
   '/resources': typeof AuthenticatedResourcesRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/skills': typeof AuthenticatedSkillsRoute
+  '/cehv13/$module': typeof AuthenticatedCehv13ModuleRoute
   '/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/month/$number': typeof AuthenticatedMonthNumberRoute
   '/session/$slug': typeof AuthenticatedSessionSlugRoute
@@ -200,7 +209,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/assessments': typeof AuthenticatedAssessmentsRoute
   '/_authenticated/career': typeof AuthenticatedCareerRoute
-  '/_authenticated/cehv13': typeof AuthenticatedCehv13Route
+  '/_authenticated/cehv13': typeof AuthenticatedCehv13RouteWithChildren
   '/_authenticated/certificates': typeof AuthenticatedCertificatesRoute
   '/_authenticated/daily': typeof AuthenticatedDailyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -214,6 +223,7 @@ export interface FileRoutesById {
   '/_authenticated/resources': typeof AuthenticatedResourcesRoute
   '/_authenticated/roadmap': typeof AuthenticatedRoadmapRoute
   '/_authenticated/skills': typeof AuthenticatedSkillsRoute
+  '/_authenticated/cehv13/$module': typeof AuthenticatedCehv13ModuleRoute
   '/_authenticated/foundation/$topic': typeof AuthenticatedFoundationTopicRoute
   '/_authenticated/month/$number': typeof AuthenticatedMonthNumberRoute
   '/_authenticated/session/$slug': typeof AuthenticatedSessionSlugRoute
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/roadmap'
     | '/skills'
+    | '/cehv13/$module'
     | '/foundation/$topic'
     | '/month/$number'
     | '/session/$slug'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/roadmap'
     | '/skills'
+    | '/cehv13/$module'
     | '/foundation/$topic'
     | '/month/$number'
     | '/session/$slug'
@@ -286,6 +298,7 @@ export interface FileRouteTypes {
     | '/_authenticated/resources'
     | '/_authenticated/roadmap'
     | '/_authenticated/skills'
+    | '/_authenticated/cehv13/$module'
     | '/_authenticated/foundation/$topic'
     | '/_authenticated/month/$number'
     | '/_authenticated/session/$slug'
@@ -453,8 +466,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFoundationTopicRouteImport
       parentRoute: typeof AuthenticatedFoundationRoute
     }
+    '/_authenticated/cehv13/$module': {
+      id: '/_authenticated/cehv13/$module'
+      path: '/$module'
+      fullPath: '/cehv13/$module'
+      preLoaderRoute: typeof AuthenticatedCehv13ModuleRouteImport
+      parentRoute: typeof AuthenticatedCehv13Route
+    }
   }
 }
+
+interface AuthenticatedCehv13RouteChildren {
+  AuthenticatedCehv13ModuleRoute: typeof AuthenticatedCehv13ModuleRoute
+}
+
+const AuthenticatedCehv13RouteChildren: AuthenticatedCehv13RouteChildren = {
+  AuthenticatedCehv13ModuleRoute: AuthenticatedCehv13ModuleRoute,
+}
+
+const AuthenticatedCehv13RouteWithChildren =
+  AuthenticatedCehv13Route._addFileChildren(AuthenticatedCehv13RouteChildren)
 
 interface AuthenticatedFoundationRouteChildren {
   AuthenticatedFoundationTopicRoute: typeof AuthenticatedFoundationTopicRoute
@@ -473,7 +504,7 @@ const AuthenticatedFoundationRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAssessmentsRoute: typeof AuthenticatedAssessmentsRoute
   AuthenticatedCareerRoute: typeof AuthenticatedCareerRoute
-  AuthenticatedCehv13Route: typeof AuthenticatedCehv13Route
+  AuthenticatedCehv13Route: typeof AuthenticatedCehv13RouteWithChildren
   AuthenticatedCertificatesRoute: typeof AuthenticatedCertificatesRoute
   AuthenticatedDailyRoute: typeof AuthenticatedDailyRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -494,7 +525,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAssessmentsRoute: AuthenticatedAssessmentsRoute,
   AuthenticatedCareerRoute: AuthenticatedCareerRoute,
-  AuthenticatedCehv13Route: AuthenticatedCehv13Route,
+  AuthenticatedCehv13Route: AuthenticatedCehv13RouteWithChildren,
   AuthenticatedCertificatesRoute: AuthenticatedCertificatesRoute,
   AuthenticatedDailyRoute: AuthenticatedDailyRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
