@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — Cybersec Masters" }] }),
+  head: () => ({ meta: [{ title: "Mission Control — CyberOS Enterprise" }] }),
   component: DashboardPage,
 });
 
