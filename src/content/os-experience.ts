@@ -490,8 +490,7 @@ export const LABS: Lab[] = [
     objectives: ["Diagnose service failure", "Determine benign vs adversary action", "Restore telemetry"],
     story: "Losing 40 endpoints of telemetry at once is either a bad patch or a coordinated evasion.",
     steps: ["Get-Service SplunkForwarder", "Get-WinEvent -LogName System | Where Id -eq 7031", "Check for recent patch deployments", "Look for concurrent Defender tamper events"],
-    expected: "Root cause identified; if adversary → IR; if patch → rollback + re-enable."]
-    ,
+    expected: "Root cause identified; if adversary → IR; if patch → rollback + re-enable.",
     hints: ["Event 7031 = service crashed. Correlate timestamps across endpoints."],
     evidence: ["Service state", "Event log excerpt"],
     interview: ["Which MITRE technique covers stopping security services?"],
@@ -530,8 +529,7 @@ export const LABS: Lab[] = [
     objectives: ["Walk the boot chain", "Isolate the failing stage"],
     story: "BitLocker recovery prompt appears every boot.",
     steps: ["Verify UEFI Secure Boot state", "Check TPM PCR values vs known-good", "Suspend BitLocker, boot, resume"],
-    expected: "Root cause: PCR mismatch after firmware update. Documented mitigation."]
-    ,
+    expected: "Root cause: PCR mismatch after firmware update. Documented mitigation.",
     hints: ["A firmware update changes PCR0 → BitLocker asks for recovery key."],
     evidence: ["TPM logs"],
     interview: ["Why does a firmware update trigger BitLocker recovery?"],
@@ -544,8 +542,7 @@ export const LABS: Lab[] = [
     objectives: ["Read the Security event log", "Correlate 4624/4625/4672 chains"],
     story: "An after-hours 4672 (special privileges) on DC01 needs explanation.",
     steps: ["Get-WinEvent -FilterHashtable @{LogName='Security';Id=4672}", "Correlate with 4624 for the same LogonId", "Check source workstation & network origin"],
-    expected: "Legitimate admin or adversary? Documented."]
-    ,
+    expected: "Legitimate admin or adversary? Documented.",
     hints: ["4672 without a matching 4624 in the same LogonId = tampering."],
     evidence: ["Event pairs"],
     interview: ["What does event 4672 mean?"],
@@ -558,8 +555,7 @@ export const LABS: Lab[] = [
     objectives: ["Read /var/log/auth.log", "Correlate with fail2ban", "Decide block vs deeper hunt"],
     story: "A distributed password-spray targets ShadowX bastion accounts nightly.",
     steps: ["grep sshd /var/log/auth.log | grep 'Failed password'", "awk pattern to bucket by src IP", "fail2ban-client status sshd", "Feed IPs into SIEM watchlist"],
-    expected: "IPs blocked, hunt query created."]
-    ,
+    expected: "IPs blocked, hunt query created.",
     hints: ["Bucket by src IP and by username to distinguish spray vs brute force."],
     evidence: ["Log excerpts", "fail2ban status"],
     interview: ["Password spray vs brute force — what's the difference?"],
