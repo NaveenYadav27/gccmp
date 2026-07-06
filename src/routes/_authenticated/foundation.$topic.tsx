@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { FOUNDATION_TOPICS, getFoundationTopic } from "@/content/foundation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { OperatingSystemsExperience } from "@/components/os/operating-systems-experience";
 
 export const Route = createFileRoute("/_authenticated/foundation/$topic")({
   head: ({ params }) => {
