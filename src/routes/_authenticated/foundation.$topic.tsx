@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { FOUNDATION_TOPICS, getFoundationTopic } from "@/content/foundation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { OperatingSystemsExperience } from "@/components/os/operating-systems-experience";
 
 export const Route = createFileRoute("/_authenticated/foundation/$topic")({
   head: ({ params }) => {
@@ -40,6 +41,8 @@ function FoundationTopicPage() {
   const idx = FOUNDATION_TOPICS.findIndex((t) => t.slug === topic.slug);
   const prev = idx > 0 ? FOUNDATION_TOPICS[idx - 1] : undefined;
   const next = idx < FOUNDATION_TOPICS.length - 1 ? FOUNDATION_TOPICS[idx + 1] : undefined;
+
+  if (topic.slug === "operating-systems") return <OperatingSystemsExperience />;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-8 md:px-8">
