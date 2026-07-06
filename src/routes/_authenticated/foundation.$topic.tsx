@@ -42,6 +42,8 @@ function FoundationTopicPage() {
   const prev = idx > 0 ? FOUNDATION_TOPICS[idx - 1] : undefined;
   const next = idx < FOUNDATION_TOPICS.length - 1 ? FOUNDATION_TOPICS[idx + 1] : undefined;
 
+  if (topic.slug === "operating-systems") return <OperatingSystemsExperience />;
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-8 md:px-8">
       <Link to="/foundation" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
