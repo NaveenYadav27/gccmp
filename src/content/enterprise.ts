@@ -2,7 +2,17 @@
 export type EnterpriseNode = {
   id: string;
   label: string;
-  layer: "user" | "endpoint" | "network" | "perimeter" | "app" | "data" | "identity" | "cloud" | "security" | "ops";
+  layer:
+    | "user"
+    | "endpoint"
+    | "network"
+    | "perimeter"
+    | "app"
+    | "data"
+    | "identity"
+    | "cloud"
+    | "security"
+    | "ops";
   x: number; // 0-100
   y: number; // 0-100
   description: string;
@@ -22,13 +32,25 @@ export const ORG = {
   hq: "Singapore",
   employees: 42000,
   sites: ["Singapore HQ", "London", "New York", "Mumbai", "Sydney"],
-  units: ["Retail Banking", "Corporate Banking", "Trading", "Wealth", "IT", "SecOps", "Risk & Compliance"],
+  units: [
+    "Retail Banking",
+    "Corporate Banking",
+    "Trading",
+    "Wealth",
+    "IT",
+    "SecOps",
+    "Risk & Compliance",
+  ],
   crownJewels: ["Core Banking DB", "Trading Engine", "Customer PII Vault", "SWIFT Gateway"],
 };
 
 export const NODES: EnterpriseNode[] = [
   {
-    id: "employee", label: "Employee Laptop", layer: "user", x: 8, y: 20,
+    id: "employee",
+    label: "Employee Laptop",
+    layer: "user",
+    x: 8,
+    y: 20,
     description: "42k corporate endpoints running Windows 11 with EDR, MDM, and DLP agents.",
     runsOn: "Windows 11 Enterprise · Intune enrolled",
     business: "Every trade, ticket, and customer email flows through here first.",
@@ -38,7 +60,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["Endpoint", "EDR", "Phishing", "MFA"],
   },
   {
-    id: "switch", label: "Access Switch", layer: "network", x: 22, y: 30,
+    id: "switch",
+    label: "Access Switch",
+    layer: "network",
+    x: 22,
+    y: 30,
     description: "Layer-2 switches at every branch. 802.1X enforced, port-mirror to SOC.",
     runsOn: "Cisco Catalyst 9300",
     business: "Delivers every packet from desk to data center.",
@@ -48,7 +74,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["VLAN", "802.1X", "Switching"],
   },
   {
-    id: "router", label: "Core Router", layer: "network", x: 34, y: 42,
+    id: "router",
+    label: "Core Router",
+    layer: "network",
+    x: 34,
+    y: 42,
     description: "Handles east-west + north-south routing to data centers and cloud.",
     runsOn: "Cisco ASR / Juniper MX",
     business: "Uptime of this box = uptime of the branch.",
@@ -58,7 +88,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["Routing", "NetFlow", "BGP"],
   },
   {
-    id: "firewall", label: "Perimeter Firewall", layer: "perimeter", x: 46, y: 52,
+    id: "firewall",
+    label: "Perimeter Firewall",
+    layer: "perimeter",
+    x: 46,
+    y: 52,
     description: "Next-gen firewall — IDS/IPS, TLS inspection, URL filter, sandbox.",
     runsOn: "Palo Alto PA-5450",
     business: "Legally-required boundary between GFC and the Internet.",
@@ -68,7 +102,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["Firewall", "IPS", "TLS inspection"],
   },
   {
-    id: "vpn", label: "Remote Access VPN", layer: "perimeter", x: 22, y: 60,
+    id: "vpn",
+    label: "Remote Access VPN",
+    layer: "perimeter",
+    x: 22,
+    y: 60,
     description: "SSL VPN + posture check for 18k remote workers.",
     runsOn: "GlobalProtect / AnyConnect",
     business: "COVID-era lifeline — still 40% of workforce is remote.",
@@ -78,7 +116,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["VPN", "MFA", "Zero Trust"],
   },
   {
-    id: "loadbalancer", label: "Load Balancer / WAF", layer: "perimeter", x: 58, y: 45,
+    id: "loadbalancer",
+    label: "Load Balancer / WAF",
+    layer: "perimeter",
+    x: 58,
+    y: 45,
     description: "F5 in front of every customer-facing web tier.",
     runsOn: "F5 BIG-IP with ASM",
     business: "Absorbs DDoS + injects security headers.",
@@ -88,7 +130,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["WAF", "DDoS", "Load balancing"],
   },
   {
-    id: "webserver", label: "Web Tier", layer: "app", x: 70, y: 32,
+    id: "webserver",
+    label: "Web Tier",
+    layer: "app",
+    x: 70,
+    y: 32,
     description: "Public site + customer portal — 1.4M sessions/day.",
     runsOn: "NGINX + Node.js on Linux",
     business: "The face of the bank. Every downtime minute = angry tweets.",
@@ -98,7 +144,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["Web app", "OWASP Top 10"],
   },
   {
-    id: "appserver", label: "Application Tier", layer: "app", x: 74, y: 50,
+    id: "appserver",
+    label: "Application Tier",
+    layer: "app",
+    x: 74,
+    y: 50,
     description: "Java microservices — accounts, payments, notifications.",
     runsOn: "Spring Boot on Kubernetes (EKS)",
     business: "Executes actual money movement.",
@@ -108,7 +158,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["Microservices", "Kubernetes", "SSRF"],
   },
   {
-    id: "db", label: "Core Banking DB", layer: "data", x: 82, y: 62,
+    id: "db",
+    label: "Core Banking DB",
+    layer: "data",
+    x: 82,
+    y: 62,
     description: "Oracle Exadata cluster. Every debit/credit lives here.",
     runsOn: "Oracle Exadata + Data Guard",
     business: "Crown jewel #1. Regulator visits if it breaks.",
@@ -118,7 +172,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["Database", "Encryption at rest", "DLP"],
   },
   {
-    id: "ad", label: "Active Directory", layer: "identity", x: 34, y: 72,
+    id: "ad",
+    label: "Active Directory",
+    layer: "identity",
+    x: 34,
+    y: 72,
     description: "Forest with 3 domains, 42k user objects, 8k computer objects.",
     runsOn: "Windows Server 2022 · 12 DCs",
     business: "Every login, GPO, share, printer.",
@@ -128,7 +186,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["Active Directory", "Kerberos", "GPO"],
   },
   {
-    id: "cloud", label: "AWS / Azure Estate", layer: "cloud", x: 60, y: 72,
+    id: "cloud",
+    label: "AWS / Azure Estate",
+    layer: "cloud",
+    x: 60,
+    y: 72,
     description: "800 accounts, IaC-managed, landing zone with SCPs.",
     runsOn: "AWS Organizations + Azure Mgmt Groups",
     business: "Where new products ship in weeks, not months.",
@@ -138,7 +200,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["IAM", "S3", "CSPM"],
   },
   {
-    id: "siem", label: "SIEM", layer: "security", x: 46, y: 82,
+    id: "siem",
+    label: "SIEM",
+    layer: "security",
+    x: 46,
+    y: 82,
     description: "Splunk Enterprise Security — 8 TB/day.",
     runsOn: "Splunk ES + ES Content Update",
     business: "One pane of glass for detection & compliance evidence.",
@@ -148,7 +214,11 @@ export const NODES: EnterpriseNode[] = [
     concepts: ["SIEM", "Correlation", "MITRE ATT&CK"],
   },
   {
-    id: "soc", label: "24×7 SOC", layer: "ops", x: 58, y: 92,
+    id: "soc",
+    label: "24×7 SOC",
+    layer: "ops",
+    x: 58,
+    y: 92,
     description: "3-tier SOC across SG/UK/NY. 90-second MTTA target.",
     runsOn: "Splunk + SOAR + ServiceNow SIR",
     business: "Insurance, regulator, brand — all rely on this room.",

@@ -35,11 +35,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -198,10 +194,7 @@ export function AppSidebar() {
                       </SidebarMenuSubItem>
                       {CEHV13_MODULES.map((m) => (
                         <SidebarMenuSubItem key={m.slug}>
-                          <SidebarMenuSubButton
-                            asChild
-                            isActive={pathname === `/cehv13/${m.slug}`}
-                          >
+                          <SidebarMenuSubButton asChild isActive={pathname === `/cehv13/${m.slug}`}>
                             <Link to="/cehv13/$module" params={{ module: m.slug }}>
                               <span className="font-mono text-[10px] text-cyber">
                                 {String(m.number).padStart(2, "0")}

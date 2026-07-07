@@ -15,7 +15,9 @@ function AssessmentsPage() {
       <header>
         <div className="text-xs font-medium uppercase tracking-[0.2em] text-cyber">Verify</div>
         <h1 className="mt-1 text-3xl font-bold tracking-tight md:text-4xl">Assessments</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Every mission ends with a scored assessment. Attempts are logged.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Every mission ends with a scored assessment. Attempts are logged.
+        </p>
       </header>
       <div className="glass-panel divide-y divide-border/60 rounded-2xl">
         {MONTH_1.map((s) => (
@@ -30,10 +32,16 @@ function AssessmentsPage() {
               <ClipboardCheck className="h-4 w-4" />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="truncate font-medium">M{String(s.number).padStart(2, "0")} · {s.title}</div>
-              <div className="text-xs text-muted-foreground">{s.assessment.length} questions · scored</div>
+              <div className="truncate font-medium">
+                M{String(s.number).padStart(2, "0")} · {s.title}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {s.assessment.length} questions · scored
+              </div>
             </div>
-            <Badge variant="outline" className="text-[10px]">Day {s.day}</Badge>
+            <Badge variant="outline" className="text-[10px]">
+              Day {s.day}
+            </Badge>
             <ArrowRight className="h-4 w-4 text-muted-foreground" />
           </Link>
         ))}

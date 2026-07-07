@@ -61,7 +61,7 @@ export async function markSessionStarted(slug: string) {
       status: "in_progress",
       progress_pct: 10,
     },
-    { onConflict: "user_id,session_slug" }
+    { onConflict: "user_id,session_slug" },
   );
 }
 
@@ -76,7 +76,7 @@ export async function updateSessionProgress(slug: string, pct: number) {
       progress_pct: Math.min(100, Math.max(0, pct)),
       completed_at: pct >= 100 ? new Date().toISOString() : null,
     },
-    { onConflict: "user_id,session_slug" }
+    { onConflict: "user_id,session_slug" },
   );
 }
 

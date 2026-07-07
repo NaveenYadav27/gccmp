@@ -48,8 +48,20 @@ export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      let response = await handler.fetch(request, env, ctx);
+      response = await normalizeCatastrophicSsrResponse(response);
+
+      // Inject security headers for response hardening
+      const newHeaders = new Headers(response.headers);
+      newHeaders.set("X-Frame-Options", "DENY");
+      newHeaders.set("X-Content-Type-Options", "nosniff");
+      newHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
+
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHeaders,
+      });
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {

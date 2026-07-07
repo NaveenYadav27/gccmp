@@ -112,8 +112,7 @@ export const CEHV13_MODULES: CehModule[] = [
     title: "Malware Threats",
     domain: "Exploitation",
     duration: "55 min",
-    brief:
-      "Trojans, viruses, worms, ransomware, fileless malware, and modern analysis techniques.",
+    brief: "Trojans, viruses, worms, ransomware, fileless malware, and modern analysis techniques.",
     objectives: [
       "Classify malware families and behaviours",
       "Run static and dynamic analysis safely",
@@ -256,8 +255,7 @@ export const CEHV13_MODULES: CehModule[] = [
     title: "Hacking Wireless Networks",
     domain: "Network Attacks",
     duration: "55 min",
-    brief:
-      "WEP, WPA2, WPA3, PMKID and evil-twin attacks. Enterprise 802.1X and mitigations.",
+    brief: "WEP, WPA2, WPA3, PMKID and evil-twin attacks. Enterprise 802.1X and mitigations.",
     objectives: [
       "Capture WPA handshakes",
       "Attack PMKID and PSK weaknesses",
@@ -272,8 +270,7 @@ export const CEHV13_MODULES: CehModule[] = [
     title: "Hacking Mobile Platforms",
     domain: "Mobile",
     duration: "55 min",
-    brief:
-      "Android and iOS attack surfaces — insecure storage, IPC, permissions, and MDM bypass.",
+    brief: "Android and iOS attack surfaces — insecure storage, IPC, permissions, and MDM bypass.",
     objectives: [
       "Reverse-engineer an APK safely",
       "Test mobile app IPC and storage",

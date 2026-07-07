@@ -23,8 +23,11 @@ export function useMyXp() {
         .eq("user_id", userRes.user.id)
         .maybeSingle();
       return data as {
-        xp: number; level: number; streak_days: number;
-        last_active: string | null; badges: string[];
+        xp: number;
+        level: number;
+        streak_days: number;
+        last_active: string | null;
+        badges: string[];
       } | null;
     },
   });
@@ -50,7 +53,10 @@ export async function awardXp(reason: XpReason) {
   const uid = userRes.user.id;
   const today = new Date().toISOString().slice(0, 10);
   const { data: existing } = await supabase
-    .from("user_xp").select("*").eq("user_id", uid).maybeSingle();
+    .from("user_xp")
+    .select("*")
+    .eq("user_id", uid)
+    .maybeSingle();
   const delta = XP_RULES[reason];
   const prevXp = existing?.xp ?? 0;
   const newXp = prevXp + delta;
@@ -62,14 +68,17 @@ export async function awardXp(reason: XpReason) {
     const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
     streak = last === yesterday ? streak + 1 : 1;
   }
-  await supabase.from("user_xp").upsert({
-    user_id: uid,
-    xp: newXp,
-    level: levelFor(newXp),
-    streak_days: streak,
-    last_active: today,
-    updated_at: new Date().toISOString(),
-  }, { onConflict: "user_id" });
+  await supabase.from("user_xp").upsert(
+    {
+      user_id: uid,
+      xp: newXp,
+      level: levelFor(newXp),
+      streak_days: streak,
+      last_active: today,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id" },
+  );
 }
 
 export async function unlockSkill(skillKey: string) {

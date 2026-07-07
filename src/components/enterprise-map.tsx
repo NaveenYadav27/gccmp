@@ -21,7 +21,12 @@ export function EnterpriseMap({ onSelect }: { onSelect: (n: EnterpriseNode) => v
     <svg viewBox="0 0 100 100" className="h-[520px] w-full">
       <defs>
         <pattern id="grid" width="5" height="5" patternUnits="userSpaceOnUse">
-          <path d="M 5 0 L 0 0 0 5" fill="none" stroke="hsl(200 30% 20% / 0.35)" strokeWidth="0.15" />
+          <path
+            d="M 5 0 L 0 0 0 5"
+            fill="none"
+            stroke="hsl(200 30% 20% / 0.35)"
+            strokeWidth="0.15"
+          />
         </pattern>
       </defs>
       <rect width="100" height="100" fill="url(#grid)" />
@@ -33,14 +38,20 @@ export function EnterpriseMap({ onSelect }: { onSelect: (n: EnterpriseNode) => v
         return (
           <g key={i}>
             <line
-              x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+              x1={a.x}
+              y1={a.y}
+              x2={b.x}
+              y2={b.y}
               stroke={active ? "hsl(190 90% 60%)" : "hsl(200 30% 40% / 0.6)"}
               strokeWidth={active ? 0.4 : 0.2}
             />
             {e.label && active && (
               <text
-                x={(a.x + b.x) / 2} y={(a.y + b.y) / 2 - 0.6}
-                fontSize="1.6" fill="hsl(190 90% 70%)" textAnchor="middle"
+                x={(a.x + b.x) / 2}
+                y={(a.y + b.y) / 2 - 0.6}
+                fontSize="1.6"
+                fill="hsl(190 90% 70%)"
+                textAnchor="middle"
               >
                 {e.label}
               </text>
@@ -57,10 +68,13 @@ export function EnterpriseMap({ onSelect }: { onSelect: (n: EnterpriseNode) => v
           className="cursor-pointer"
         >
           <circle
-            cx={n.x} cy={n.y} r={hover === n.id ? 2.6 : 2}
+            cx={n.x}
+            cy={n.y}
+            r={hover === n.id ? 2.6 : 2}
             fill={LAYER_COLOR[n.layer]}
             opacity={0.85}
-            stroke="hsl(220 40% 8%)" strokeWidth="0.3"
+            stroke="hsl(220 40% 8%)"
+            strokeWidth="0.3"
           />
           <text x={n.x} y={n.y + 4.5} fontSize="1.8" fill="hsl(210 20% 85%)" textAnchor="middle">
             {n.label}
@@ -76,7 +90,12 @@ export function EnterpriseLegend() {
   return (
     <div className="flex flex-wrap gap-2 text-[10px]">
       {layers.map((l) => (
-        <div key={l} className={cn("flex items-center gap-1.5 rounded-md border border-border/50 bg-surface-1 px-2 py-1")}>
+        <div
+          key={l}
+          className={cn(
+            "flex items-center gap-1.5 rounded-md border border-border/50 bg-surface-1 px-2 py-1",
+          )}
+        >
           <span className="h-2 w-2 rounded-full" style={{ background: LAYER_COLOR[l] }} />
           <span className="uppercase tracking-wider text-muted-foreground">{l}</span>
         </div>

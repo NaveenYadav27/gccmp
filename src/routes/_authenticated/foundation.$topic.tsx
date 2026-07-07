@@ -4,7 +4,7 @@ import { FOUNDATION_TOPICS, getFoundationTopic } from "@/content/foundation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { OperatingSystemsExperience } from "@/components/os/operating-systems-experience";
-import { DigitalWorldExperience } from "@/components/foundation/digital-world-experience";
+import { FoundationEnterpriseEngine } from "@/components/foundation/FoundationEnterpriseEngine";
 
 export const Route = createFileRoute("/_authenticated/foundation/$topic")({
   head: ({ params }) => {
@@ -24,14 +24,18 @@ export const Route = createFileRoute("/_authenticated/foundation/$topic")({
   notFoundComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <h1 className="text-2xl font-bold">Topic not found</h1>
-      <Button asChild variant="link"><Link to="/foundation">← Back to Foundation</Link></Button>
+      <Button asChild variant="link">
+        <Link to="/foundation">← Back to Foundation</Link>
+      </Button>
     </div>
   ),
   errorComponent: ({ error, reset }) => (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <h1 className="text-2xl font-bold">Something went wrong</h1>
       <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
-      <Button className="mt-4" onClick={reset}>Retry</Button>
+      <Button className="mt-4" onClick={reset}>
+        Retry
+      </Button>
     </div>
   ),
   component: FoundationTopicPage,
@@ -44,17 +48,22 @@ function FoundationTopicPage() {
   const next = idx < FOUNDATION_TOPICS.length - 1 ? FOUNDATION_TOPICS[idx + 1] : undefined;
 
   if (topic.slug === "operating-systems") return <OperatingSystemsExperience />;
-  if (topic.slug === "digital-world") return <DigitalWorldExperience />;
+  if (topic.slug === "digital-world") return <FoundationEnterpriseEngine topicSlug={topic.slug} />;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-8 md:px-8">
-      <Link to="/foundation" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+      <Link
+        to="/foundation"
+        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="h-3 w-3" /> Foundation
       </Link>
 
       <header className="space-y-2">
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-cyber/50 text-cyber">F{String(topic.number).padStart(2, "0")}</Badge>
+          <Badge variant="outline" className="border-cyber/50 text-cyber">
+            F{String(topic.number).padStart(2, "0")}
+          </Badge>
           <span className="text-xs text-muted-foreground">{topic.duration}</span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{topic.title}</h1>
@@ -72,7 +81,9 @@ function FoundationTopicPage() {
         <ul className="space-y-2 text-sm">
           {topic.objectives.map((o, i) => (
             <li key={i} className="flex gap-3">
-              <span className="mt-0.5 font-mono text-[10px] text-cyber">{String(i + 1).padStart(2, "0")}</span>
+              <span className="mt-0.5 font-mono text-[10px] text-cyber">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <span>{o}</span>
             </li>
           ))}
@@ -85,7 +96,9 @@ function FoundationTopicPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           {topic.keyIdeas.map((k) => (
-            <Badge key={k} variant="outline" className="border-border/60">{k}</Badge>
+            <Badge key={k} variant="outline" className="border-border/60">
+              {k}
+            </Badge>
           ))}
         </div>
       </section>
@@ -97,14 +110,18 @@ function FoundationTopicPage() {
               <ArrowLeft className="mr-1 h-4 w-4" /> {prev.title}
             </Link>
           </Button>
-        ) : <span />}
+        ) : (
+          <span />
+        )}
         {next ? (
           <Button asChild size="sm">
             <Link to="/foundation/$topic" params={{ topic: next.slug }}>
               {next.title} <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
-        ) : <span />}
+        ) : (
+          <span />
+        )}
       </nav>
     </div>
   );

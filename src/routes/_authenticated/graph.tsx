@@ -34,7 +34,9 @@ function GraphPage() {
   const [q, setQ] = useState("");
   const [selected, setSelected] = useState<GraphNode | null>(null);
   const { data: progress } = useMyProgress();
-  const completed = new Set((progress ?? []).filter((r) => r.status === "completed").map((r) => r.session_slug));
+  const completed = new Set(
+    (progress ?? []).filter((r) => r.status === "completed").map((r) => r.session_slug),
+  );
 
   const positions = useMemo(() => {
     const map = new Map<string, { x: number; y: number }>();
@@ -43,7 +45,9 @@ function GraphPage() {
   }, []);
 
   const filtered = q.trim()
-    ? new Set(GRAPH_NODES.filter((n) => n.label.toLowerCase().includes(q.toLowerCase())).map((n) => n.id))
+    ? new Set(
+        GRAPH_NODES.filter((n) => n.label.toLowerCase().includes(q.toLowerCase())).map((n) => n.id),
+      )
     : null;
 
   return (
@@ -53,9 +57,16 @@ function GraphPage() {
           <Network className="h-5 w-5 text-cyber" />
           <div>
             <h1 className="text-2xl font-bold">Knowledge Graph</h1>
-            <p className="text-sm text-muted-foreground">Every concept and how it connects. Completed missions light their concepts up.</p>
+            <p className="text-sm text-muted-foreground">
+              Every concept and how it connects. Completed missions light their concepts up.
+            </p>
           </div>
-          <Input placeholder="Search concept…" value={q} onChange={(e) => setQ(e.target.value)} className="ml-auto max-w-xs bg-surface-1" />
+          <Input
+            placeholder="Search concept…"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className="ml-auto max-w-xs bg-surface-1"
+          />
         </div>
       </header>
 
@@ -66,21 +77,46 @@ function GraphPage() {
               const a = positions.get(e.from);
               const b = positions.get(e.to);
               if (!a || !b) return null;
-              return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="hsl(200 30% 30% / 0.5)" strokeWidth="0.15" />;
+              return (
+                <line
+                  key={i}
+                  x1={a.x}
+                  y1={a.y}
+                  x2={b.x}
+                  y2={b.y}
+                  stroke="hsl(200 30% 30% / 0.5)"
+                  strokeWidth="0.15"
+                />
+              );
             })}
             {GRAPH_NODES.map((n) => {
               const p = positions.get(n.id)!;
               const isDone = n.sessionSlug ? completed.has(n.sessionSlug) : false;
               const dim = filtered && !filtered.has(n.id);
               return (
-                <g key={n.id} onClick={() => setSelected(n)} className="cursor-pointer" opacity={dim ? 0.2 : 1}>
+                <g
+                  key={n.id}
+                  onClick={() => setSelected(n)}
+                  className="cursor-pointer"
+                  opacity={dim ? 0.2 : 1}
+                >
                   <circle
-                    cx={p.x} cy={p.y} r={isDone ? 2.4 : 1.8}
+                    cx={p.x}
+                    cy={p.y}
+                    r={isDone ? 2.4 : 1.8}
                     fill={DOMAIN_COLOR[n.domain]}
                     stroke={isDone ? "hsl(190 90% 70%)" : "hsl(220 40% 8%)"}
                     strokeWidth={isDone ? 0.5 : 0.3}
                   />
-                  <text x={p.x} y={p.y - 3} fontSize="1.6" fill="hsl(210 20% 85%)" textAnchor="middle">{n.label}</text>
+                  <text
+                    x={p.x}
+                    y={p.y - 3}
+                    fontSize="1.6"
+                    fill="hsl(210 20% 85%)"
+                    textAnchor="middle"
+                  >
+                    {n.label}
+                  </text>
                 </g>
               );
             })}
@@ -89,10 +125,15 @@ function GraphPage() {
 
         <div className="space-y-4">
           <Card className="glass-panel p-4">
-            <div className="text-xs font-semibold uppercase tracking-[0.15em] text-cyber">Legend</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.15em] text-cyber">
+              Legend
+            </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {Object.entries(DOMAIN_COLOR).map(([d, c]) => (
-                <div key={d} className="flex items-center gap-1.5 rounded-md border border-border/50 bg-surface-1 px-2 py-1 text-[10px]">
+                <div
+                  key={d}
+                  className="flex items-center gap-1.5 rounded-md border border-border/50 bg-surface-1 px-2 py-1 text-[10px]"
+                >
                   <span className="h-2 w-2 rounded-full" style={{ background: c }} />
                   <span className="uppercase tracking-wider text-muted-foreground">{d}</span>
                 </div>
@@ -101,12 +142,16 @@ function GraphPage() {
           </Card>
           {selected && (
             <Card className="glass-panel p-4">
-              <Badge className="mb-2" variant="outline">{selected.domain}</Badge>
+              <Badge className="mb-2" variant="outline">
+                {selected.domain}
+              </Badge>
               <div className="text-lg font-bold">{selected.label}</div>
               <p className="mt-1 text-sm text-muted-foreground">{selected.summary}</p>
               {selected.sessionSlug && (
                 <Button asChild size="sm" className="mt-3 w-full">
-                  <Link to="/session/$slug" params={{ slug: selected.sessionSlug }}>Open mission</Link>
+                  <Link to="/session/$slug" params={{ slug: selected.sessionSlug }}>
+                    Open mission
+                  </Link>
                 </Button>
               )}
             </Card>

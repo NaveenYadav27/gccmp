@@ -46,6 +46,22 @@ function AuthPage() {
 
   async function signUp(e: React.FormEvent) {
     e.preventDefault();
+
+    const allowedDomainsStr = import.meta.env.VITE_ALLOWED_SIGNUP_DOMAINS;
+    if (allowedDomainsStr) {
+      const allowedDomains = allowedDomainsStr
+        .split(",")
+        .map((d) => d.trim().toLowerCase())
+        .filter(Boolean);
+      const userDomain = email.split("@")[1]?.toLowerCase();
+      if (allowedDomains.length > 0 && !allowedDomains.includes(userDomain)) {
+        toast.error(
+          `Signup restricted to authorized enterprise domains: ${allowedDomains.join(", ")}`,
+        );
+        return;
+      }
+    }
+
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email,
@@ -82,11 +98,12 @@ function AuthPage() {
               </div>
             </div>
             <h1 className="text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl">
-              The Enterprise <span className="cyber-text">Cybersecurity</span> Learning Operating System.
+              The Enterprise <span className="cyber-text">Cybersecurity</span> Learning Operating
+              System.
             </h1>
             <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-              120 days. Four missions. Zero fluff. Enter your cohort console to begin
-              Month 1 — Fundamentals.
+              120 days. Four missions. Zero fluff. Enter your cohort console to begin Month 1 —
+              Fundamentals.
             </p>
             <div className="grid grid-cols-3 gap-3 pt-4">
               {[
@@ -130,11 +147,25 @@ function AuthPage() {
                 <form onSubmit={signIn} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="si-email">Email</Label>
-                    <Input id="si-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="analyst@company.com" />
+                    <Input
+                      id="si-email"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="analyst@company.com"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="si-pw">Password</Label>
-                    <Input id="si-pw" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+                    <Input
+                      id="si-pw"
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                    />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Authenticating…" : "Enter console"}
@@ -146,15 +177,35 @@ function AuthPage() {
                 <form onSubmit={signUp} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="su-name">Display name</Label>
-                    <Input id="su-name" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Alex Chen" />
+                    <Input
+                      id="su-name"
+                      type="text"
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      placeholder="Alex Chen"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="su-email">Email</Label>
-                    <Input id="su-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <Input
+                      id="su-email"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="su-pw">Password</Label>
-                    <Input id="su-pw" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min 6 characters" />
+                    <Input
+                      id="su-pw"
+                      type="password"
+                      required
+                      minLength={6}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Min 6 characters"
+                    />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Provisioning…" : "Provision seat"}

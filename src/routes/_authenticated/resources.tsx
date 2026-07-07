@@ -45,7 +45,9 @@ function ResourcesPage() {
       <header>
         <div className="text-xs font-medium uppercase tracking-[0.2em] text-cyber">Reference</div>
         <h1 className="mt-1 text-3xl font-bold tracking-tight md:text-4xl">Resources</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Cheat sheets, cornerstone reading, and repeatable playbooks.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Cheat sheets, cornerstone reading, and repeatable playbooks.
+        </p>
       </header>
       <div className="grid gap-5 md:grid-cols-3">
         {GROUPS.map((g) => (
@@ -58,7 +60,10 @@ function ResourcesPage() {
             </div>
             <ul className="space-y-2">
               {g.items.map((it) => (
-                <li key={it} className="flex items-center justify-between gap-2 rounded-md p-2 text-sm hover:bg-surface-1">
+                <li
+                  key={it}
+                  className="flex items-center justify-between gap-2 rounded-md p-2 text-sm hover:bg-surface-1"
+                >
                   <span>{it}</span>
                   <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
                 </li>

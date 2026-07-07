@@ -17,9 +17,7 @@ export type ChatOptions = {
   temperature?: number;
 };
 
-export type ChatResult =
-  | { ok: true; text: string }
-  | { ok: false; status: number; text: string };
+export type ChatResult = { ok: true; text: string } | { ok: false; status: number; text: string };
 
 export interface ChatProvider {
   id: string;
@@ -67,7 +65,9 @@ export function getProvider(id?: ProviderId): ChatProvider {
 }
 
 /** Convenience: run a chat completion with the currently-configured default provider. */
-export async function chatComplete(opts: ChatOptions & { provider?: ProviderId }): Promise<ChatResult> {
+export async function chatComplete(
+  opts: ChatOptions & { provider?: ProviderId },
+): Promise<ChatResult> {
   const p = getProvider(opts.provider);
   return p.chat(opts);
 }
