@@ -1,89 +1,97 @@
-// F01 · The Digital World — enterprise learning object for GFS SOC Day 1.
+// Content data for F01: The Digital World experience
+// Enterprise scenario: Global Financial Services (GFS) — EMEA online banking outage
 
 export const COMPANY = {
-  name: "Global Financial Services",
+  name: "Global Financial Services (GFS)",
   short: "GFS",
-  hq: "London · Canary Wharf",
-  regions: 27,
-  employees: 48_500,
-  customers: "18.4M",
-  ciso: "Priya Raman",
-  soc: "GFS-SOC (Follow-the-sun · London → Singapore → NYC)",
 };
 
 export const PERSONA = {
-  name: "You",
-  role: "Junior SOC Analyst · Tier 1",
-  empId: "GFS-SOC-2041",
-  manager: "Marcus Chen (SOC Shift Lead)",
-  dept: "Cyber Defence · Security Operations",
-  shift: "London · 08:00–16:00 GMT",
-  laptop: "GFS-LT-2041 (Win 11 · Defender · CrowdStrike Falcon)",
+  role: "Junior SOC Analyst",
+  empId: "EMP-4427",
 };
 
-// The pain that opens the lesson.
 export const MISSION = {
-  ticket: "INC-874120",
-  severity: "P1 · Customer-facing outage",
-  opened: "08:14 GMT · Monday",
-  headline: "Online banking is DOWN across EMEA",
+  ticket: "INC-2024-0731",
+  headline: "EMEA Online Banking — Total Outage",
+  severity: "P1 · Critical",
+  opened: "08:14 GMT",
   callerImpact:
-    "Retail customers can't log in on web or mobile. Branch tellers can't authorise wires. Call-centre queue is at 2,400 and growing.",
-  businessImpact: [
-    { label: "Revenue at risk", value: "£1.2M / hour" },
-    { label: "Affected customers", value: "6.8M EMEA" },
-    { label: "Regulator clock", value: "72h to notify FCA if breach" },
-    { label: "SLA breach in", value: "46 min" },
-  ],
+    "Customers across EMEA cannot log in to online or mobile banking. Estimated 2.4 million sessions dropped.",
   soFar:
-    "Ops confirms the core banking mainframe is healthy. Network confirms internet links are up. Yet the mobile app times out at login. Where does 'online banking' actually live? That's today's mission — map the digital world the bank runs on before you can defend it.",
+    "Load balancer logs show a spike in TLS handshake failures beginning at 08:11. App servers are healthy. Database cluster is healthy. Network team reports no ISP issues. Identity team is investigating the auth service.",
+  businessImpact: [
+    { label: "Customers affected", value: "2.4M" },
+    { label: "Revenue at risk", value: "£180K/min" },
+    { label: "Regulator SLA", value: "4h max" },
+    { label: "Open incidents", value: "1 P1" },
+  ],
 };
 
-// Four pillars — every enterprise runs on these.
 export const PILLARS = [
   {
     id: "compute",
     name: "Compute",
-    tag: "Where code runs",
-    desc: "CPUs, VMs, containers, serverless. Every request eventually executes on a processor.",
-    examples: ["EC2 / Azure VMs", "Kubernetes pods", "Mainframe LPARs", "Lambda functions"],
-    gfs: "18,400 VMs · 4 mainframes · 62 K8s clusters",
-    attack: ["Malware execution", "Container escape", "Cryptomining", "Living-off-the-land binaries"],
+    tag: "CPU, memory, processes, virtualisation",
+    desc:
+      "Every GFS transaction is processed by compute resources — physical servers, VMs and containers. When compute is saturated, services degrade or crash. Attackers exploit compute via cryptojacking, DoS, or malware that burns CPU.",
+    examples: ["Web servers", "App servers", "Containers", "VMs", "Serverless functions"],
+    gfs: "32 app server VMs (Ubuntu 22.04) behind load balancer LB-EMEA-01. Each runs the Node.js banking API.",
+    attack: [
+      "DoS/DDoS to exhaust CPU/memory and cause outage",
+      "Cryptojacking malware hidden in app container",
+      "Privilege escalation via kernel exploit to own the host",
+    ],
   },
   {
     id: "storage",
     name: "Storage",
-    tag: "Where data rests",
-    desc: "Databases, object stores, file shares, backups. This is what attackers steal or encrypt.",
-    examples: ["Oracle / Postgres", "S3 / Azure Blob", "SMB shares", "Backup tapes"],
-    gfs: "94 PB total · 22 PB customer PII · 480 databases",
-    attack: ["Ransomware encryption", "Data exfiltration", "SQL injection", "Backup destruction"],
+    tag: "Databases, file systems, block & object storage",
+    desc:
+      "Storage holds customer records, transaction logs, and audit trails. Corruption, ransomware, or unauthorised access here is catastrophic — both for operations and for PCI-DSS compliance.",
+    examples: ["PostgreSQL", "Oracle DB", "S3 / Blob", "NFS mounts", "SAN / NAS"],
+    gfs: "PostgreSQL cluster (primary + 2 replicas). Stores 14M customer accounts. Encrypted at rest (AES-256). Backed up every 15 min to GFS-VAULT-S3.",
+    attack: [
+      "SQL injection to exfiltrate or corrupt records",
+      "Ransomware encrypting the database volume",
+      "Backup deletion to prevent recovery",
+    ],
   },
   {
     id: "network",
     name: "Network",
-    tag: "How bits move",
-    desc: "Routers, switches, firewalls, DNS, load balancers, the internet. Every attack traverses a network.",
-    examples: ["BGP peering", "Cloudflare / F5", "Palo Alto firewalls", "Internal MPLS"],
-    gfs: "27 datacentres · 3 tier-1 ISPs · 14,200 firewall rules",
-    attack: ["DDoS", "DNS hijack", "Lateral movement", "MITM on TLS"],
+    tag: "Packets, protocols, DNS, TLS, routing",
+    desc:
+      "The network carries every request between users, services, and data. GFS runs across 3 data centres connected by MPLS. A misconfiguration, DDoS, or BGP hijack can black-hole traffic instantly.",
+    examples: ["Load balancers", "Firewalls", "DNS", "TLS certificates", "VPN gateways"],
+    gfs: "Akamai CDN → F5 LB-EMEA-01 → 32 app VMs → PostgreSQL cluster. TLS 1.3 enforced end-to-end. Certificate managed by DigiCert, expires 2025-03-14.",
+    attack: [
+      "TLS certificate expiry silently kills HTTPS connections",
+      "BGP hijack reroutes traffic to attacker-controlled server",
+      "DNS poisoning redirects users to phishing site",
+    ],
   },
   {
     id: "identity",
     name: "Identity",
-    tag: "Who is who",
-    desc: "Users, service accounts, tokens, MFA. Modern attacks steal identity, not machines.",
-    examples: ["Active Directory", "Okta / Entra ID", "SAML / OIDC", "Kerberos tickets"],
-    gfs: "48,500 humans · 312,000 service accounts · 6 AD forests",
-    attack: ["Phishing", "Password spray", "Kerberoasting", "OAuth consent abuse"],
+    tag: "Users, credentials, MFA, IAM, tokens",
+    desc:
+      "Identity is the gatekeeper. Every request must prove who it is. At GFS, the identity plane controls access to banking, admin systems, and cloud APIs. Compromised credentials are the #1 attack vector.",
+    examples: ["Active Directory", "OAuth 2.0", "SAML", "MFA tokens", "API keys"],
+    gfs: "Azure AD (Entra ID) for staff SSO. Customer auth via internal IdM-CORE service (OAuth 2.0 + TOTP MFA). Today's outage started here — IdM-CORE is returning 503.",
+    attack: [
+      "Credential stuffing against IdM-CORE login endpoint",
+      "OAuth token theft via open redirect",
+      "MFA bypass via SIM swapping or push-bombing",
+    ],
   },
-] as const;
+];
 
-// The banking transaction the customer just tried — every hop is a component we can defend or lose.
 export type TxHop = {
   id: string;
+  step: number;
+  layer: string;
   actor: string;
-  layer: "customer" | "edge" | "app" | "identity" | "data" | "core";
   action: string;
   pillar: "compute" | "storage" | "network" | "identity";
   latencyMs: number;
@@ -95,207 +103,191 @@ export type TxHop = {
 export const TX_HOPS: TxHop[] = [
   {
     id: "h1",
-    actor: "Customer mobile app",
-    layer: "customer",
-    action: "Tap 'Log in' — send credentials + device fingerprint",
+    step: 1,
+    layer: "CDN / Edge",
+    actor: "Akamai Edge Node",
+    action: "Terminates TLS, caches static assets, passes dynamic requests to load balancer",
     pillar: "network",
     latencyMs: 12,
     ok: true,
-    detail: "iOS/Android app opens TLS 1.3 to api.gfsbank.com. Cert pinned to GFS root CA.",
-    attackIfLost: "Fake app on jailbroken phone; SSL-strip on hotel wifi.",
+    detail: "TLS 1.3 handshake: 11ms. HTTP/2 stream established. Cache MISS on /api/auth/login. Forwarding to LB-EMEA-01.",
+    attackIfLost: "Attacker intercepts plaintext credentials before they reach GFS; can replay tokens globally",
   },
   {
     id: "h2",
-    actor: "Cloudflare edge (LHR)",
-    layer: "edge",
-    action: "Terminate TLS · WAF inspect · rate-limit",
+    step: 2,
+    layer: "Load Balancer",
+    actor: "F5 LB-EMEA-01",
+    action: "Health-checks app servers, distributes requests round-robin, enforces WAF rules",
     pillar: "network",
-    latencyMs: 4,
+    latencyMs: 3,
     ok: true,
-    detail: "WAF blocks OWASP Top-10 patterns. Bot-score gates 41% of raw traffic.",
-    attackIfLost: "Credential-stuffing bots reach origin; L7 DDoS.",
+    detail: "29/32 app VMs healthy. Round-robin selection: app-vm-07. WAF: no SQL injection pattern. Forwarding.",
+    attackIfLost: "Attacker bypasses WAF, injects malicious payloads directly to app server; or causes split-brain between VMs",
   },
   {
     id: "h3",
-    actor: "API Gateway (AWS eu-west-2)",
-    layer: "app",
-    action: "Route /v3/auth/login to auth-service pod",
+    step: 3,
+    layer: "Application Server",
+    actor: "app-vm-07 (Node.js API)",
+    action: "Parses JSON body, validates CSRF token, calls IdM-CORE to authenticate user",
     pillar: "compute",
-    latencyMs: 6,
-    ok: false,
-    detail: "❌ Gateway → auth-service returns 504. Pod count 0/12 in eu-west-2a.",
-    attackIfLost: "Attacker replays captured JWTs; broken auth = broken bank.",
+    latencyMs: 8,
+    ok: true,
+    detail: "CPU: 41%. Memory: 3.2 GB / 8 GB. CSRF token valid. Calling IdM-CORE at http://idm-core.gfs.internal:8080/auth",
+    attackIfLost: "Attacker can execute arbitrary code on the VM, pivot to internal network, or install a backdoor",
   },
   {
     id: "h4",
-    actor: "auth-service (EKS pod)",
-    layer: "identity",
-    action: "Validate credentials against Entra ID · mint session JWT",
+    step: 4,
+    layer: "Identity Service",
+    actor: "IdM-CORE Auth Service",
+    action: "Validates username + password hash, triggers MFA check, issues short-lived JWT",
     pillar: "identity",
-    latencyMs: 38,
+    latencyMs: 950,
     ok: false,
-    detail: "Never reached. Pods evicted after node group autoscaler failed at 07:52 GMT.",
-    attackIfLost: "Password spray, MFA bypass, token forgery.",
+    detail: "HTTP 503 Service Unavailable. Response body: {\"error\":\"upstream_timeout\",\"detail\":\"LDAP connection pool exhausted\"}. IdM-CORE cannot reach AD-DC-02. LDAP pool: 500/500 connections.",
+    attackIfLost: "Attacker controls authentication — can bypass MFA, issue tokens for any user, or lock out all customers",
   },
   {
     id: "h5",
-    actor: "Customer profile DB (Postgres)",
-    layer: "data",
-    action: "Read account summary, balance, recent txns",
-    pillar: "storage",
-    latencyMs: 22,
-    ok: true,
-    detail: "DB is healthy. Row-level encryption via pgcrypto. Read replica in eu-west-1.",
-    attackIfLost: "PII dump; ransomware; regulator fine under GDPR.",
+    step: 5,
+    layer: "Directory Service",
+    actor: "Active Directory (AD-DC-02)",
+    action: "Verifies user credentials against directory, returns group memberships",
+    pillar: "identity",
+    latencyMs: 0,
+    ok: false,
+    detail: "AD-DC-02 unreachable. AD-DC-01 (primary) is healthy. Replication lag between DC-01 and DC-02: 47 minutes. Root cause: DC-02 NIC firmware crash at 08:09.",
+    attackIfLost: "Attacker with DC access can create accounts, reset any password, and issue Kerberos tickets (golden ticket attack)",
   },
   {
     id: "h6",
-    actor: "Core banking (z/OS mainframe)",
-    layer: "core",
-    action: "Post any pending debit/credit · confirm ledger",
-    pillar: "compute",
-    latencyMs: 84,
+    step: 6,
+    layer: "Database",
+    actor: "PostgreSQL Primary",
+    action: "Stores and retrieves customer account records, session tokens, audit log",
+    pillar: "storage",
+    latencyMs: 0,
     ok: true,
-    detail: "Mainframe LPAR CBANK-01. RACF-authenticated. 4.2M txns/hour capacity.",
-    attackIfLost: "Ledger tampering — existential risk to the bank.",
+    detail: "PostgreSQL: healthy. Connection pool: 234/400. Query p95: 4ms. No blocking queries. Replica lag: 0ms. (DB was never reached because auth failed upstream.)",
+    attackIfLost: "Attacker exfiltrates 14M customer records or corrupts balances — maximum financial and regulatory damage",
   },
 ];
 
 export const ROOT_CAUSE = {
   finding:
-    "auth-service is down in eu-west-2. Every downstream hop is healthy — but with no identity layer, the 'digital world' collapses at the front door.",
-  layer: "identity",
-  fix: "Cluster autoscaler restored; pods rescheduled. Login recovered at 08:47 GMT (33 min impact).",
+    "AD-DC-02 (secondary domain controller) suffered a NIC firmware crash at 08:09. IdM-CORE's LDAP connection pool was exclusively configured to use DC-02 for EMEA region load balancing. When DC-02 went offline, all 500 LDAP connections timed out simultaneously, exhausting the pool. IdM-CORE returned HTTP 503, causing all login attempts to fail.",
+  fix: "1) Restart AD-DC-02 NIC (firmware rollback). 2) Update IdM-CORE LDAP config to failover to DC-01 automatically. 3) Drain and restart IdM-CORE connection pool. ETA: 35 minutes.",
   lesson:
-    "Attacks and outages both target the weakest pillar. You just proved that a healthy database is worthless without a healthy identity service.",
+    "A single point of failure in the Identity pillar caused a total outage despite healthy compute, storage, and network layers. Resilience must be designed at each pillar independently.",
 };
 
-// A short list of real incidents that map to today's pillars.
 export const REAL_INCIDENTS = [
   {
-    year: 2023,
-    who: "MOVEit (Progress)",
-    pillar: "storage",
-    line: "Zero-day SQLi in a file-transfer product; 2,700+ orgs breached. Storage layer.",
+    who: "Okta (2022)",
+    year: 2022,
+    pillar: "identity" as const,
+    line: "Lapsus$ accessed Okta's customer support tool via a compromised contractor laptop. 366 customer tenants were potentially exposed. No code was modified but trust was severely damaged.",
   },
   {
-    year: 2024,
-    who: "CrowdStrike Falcon update",
-    pillar: "compute",
-    line: "Bad kernel driver bricked 8.5M Windows hosts globally. Compute layer.",
+    who: "Facebook (2021)",
+    year: 2021,
+    pillar: "network" as const,
+    line: "A BGP configuration change withdrew Facebook's routing announcements from the global internet. DNS and identity systems went unreachable. 3.5 billion users were locked out for ~6 hours.",
   },
   {
-    year: 2023,
-    who: "Okta support system",
-    pillar: "identity",
-    line: "Attacker stole HAR files with session tokens from Okta support. Identity layer.",
+    who: "Capital One (2019)",
+    year: 2019,
+    pillar: "compute" as const,
+    line: "A misconfigured WAF allowed an attacker to exploit a Server-Side Request Forgery (SSRF) vulnerability, retrieve AWS IAM credentials via the metadata service, and exfiltrate 100M customer records from S3.",
   },
   {
-    year: 2016,
-    who: "Dyn DNS",
-    pillar: "network",
-    line: "Mirai botnet DDoS took DNS offline; half the US internet unreachable. Network layer.",
-  },
-] as const;
-
-// End-of-topic knowledge check.
-export type Question = {
-  id: string;
-  prompt: string;
-  options: { id: string; text: string; correct?: true; why: string }[];
-};
-
-export const QUIZ: Question[] = [
-  {
-    id: "q1",
-    prompt: "Which pillar is failing in the GFS outage?",
-    options: [
-      { id: "a", text: "Compute", why: "Pods CAN'T run but the compute platform itself (EKS) is healthy." },
-      { id: "b", text: "Storage", why: "DB is fine; not the bottleneck." },
-      { id: "c", text: "Network", why: "Cloudflare + gateway are fine." },
-      { id: "d", text: "Identity", correct: true, why: "auth-service pods are 0/12. No identity → no login → no bank." },
-    ],
-  },
-  {
-    id: "q2",
-    prompt: "Why does 'the bank is on the cloud' oversimplify?",
-    options: [
-      {
-        id: "a",
-        text: "Because there's no cloud; it's someone else's computer.",
-        why: "Cute but not the point — the point is that the bank spans many layers.",
-      },
-      {
-        id: "b",
-        text: "Because a banking transaction crosses ~6 layers (device, edge, app, identity, data, core), each with its own attack surface.",
-        correct: true,
-        why: "Exactly. You can't defend a system you can't map.",
-      },
-      { id: "c", text: "Because clouds are less secure than on-prem.", why: "Not inherently — different threat model, not weaker." },
-      { id: "d", text: "Because mainframes don't run in the cloud.", why: "True but tangential." },
-    ],
-  },
-  {
-    id: "q3",
-    prompt: "A regulator asks: 'where does customer PII live?' Which pillar answers?",
-    options: [
-      { id: "a", text: "Compute", why: "PII is data-at-rest, not the CPU that reads it." },
-      { id: "b", text: "Storage", correct: true, why: "DBs, object stores, backups. That's the storage pillar." },
-      { id: "c", text: "Network", why: "Network is data-in-motion." },
-      { id: "d", text: "Identity", why: "Identity says WHO can read PII, not where it sits." },
-    ],
+    who: "British Airways (2018)",
+    year: 2018,
+    pillar: "storage" as const,
+    line: "Magecart attackers injected 22 lines of JavaScript into BA's payment page. Payment card data for 500,000 customers was exfiltrated in real time. £20M ICO fine.",
   },
 ];
 
 export const LAB = {
-  id: "F01-LAB-01",
-  title: "Trace the failing banking transaction",
-  mission: "Walk the 6 hops of a login request. Identify the failing pillar. Draft a 3-line incident summary for Marcus.",
-  provider: "mock" as const,
-  duration: "20 min",
+  id: "LAB-F01-01",
+  provider: "Proxmox VE (GFS Lab Cluster)",
+  duration: "45 min",
+  title: "Map the GFS Digital Estate",
+  mission:
+    "You have been given read-only access to the GFS staging environment. Your mission is to document the four pillars — list the assets under each, confirm TLS certificate validity, and write the 3-line incident summary Marcus will send to the CIO.",
   evidenceCaptured: [
-    "6 hops recorded with latency, pillar, and health",
-    "Failing hop highlighted",
-    "Root-cause pillar identified",
-    "3-line incident summary drafted",
+    "Screenshot: nmap scan of GFS DMZ (port inventory)",
+    "Screenshot: TLS certificate details for banking.gfs.internal",
+    "Screenshot: AD Users & Computers — IdM service account",
+    "Artefact: 3-line CIO incident summary (your deliverable)",
   ],
   proxmoxNote:
-    "Real Proxmox lab arrives with Increment 01 · Sub-iteration 10. This mission runs in the browser today and will re-run against live VMs once the LabProvider abstraction ships.",
+    "Proxmox lab provisioning is on the product roadmap. When live, you will clone the GFS-STAGING template and complete this lab in a fully isolated VM — no risk to production.",
 };
+
+export const QUIZ = [
+  {
+    id: "q1",
+    prompt: "The GFS online banking outage at 08:14 was ultimately caused by a failure in which pillar?",
+    options: [
+      { id: "a", text: "Compute — the app servers ran out of memory", correct: false, why: "App servers were healthy throughout the incident." },
+      { id: "b", text: "Network — Akamai dropped the TLS session", correct: false, why: "Akamai was healthy. TLS handshakes succeeded at the edge." },
+      { id: "c", text: "Identity — IdM-CORE could not reach Active Directory", correct: true, why: "Correct. AD-DC-02 NIC crash → LDAP pool exhaustion → IdM-CORE 503 → all logins fail." },
+      { id: "d", text: "Storage — the PostgreSQL cluster was corrupted", correct: false, why: "PostgreSQL was healthy. The database was never reached because auth failed first." },
+    ],
+  },
+  {
+    id: "q2",
+    prompt: "A junior analyst suggests 'the network is down' because customers can't reach the site. Why is this wrong in the GFS incident?",
+    options: [
+      { id: "a", text: "The analyst is right — network issues always cause login failures", correct: false, why: "Not true. Login failures have many root causes across all four pillars." },
+      { id: "b", text: "Network (CDN, LB) was healthy — the failure was in the Identity pillar", correct: true, why: "Correct. Akamai and the F5 load balancer were both healthy. The failure was identity-layer deep." },
+      { id: "c", text: "You can't tell without a packet capture", correct: false, why: "Load balancer and CDN logs clearly showed network hops were healthy." },
+      { id: "d", text: "The network team is always responsible for login issues", correct: false, why: "Login issues span all four pillars. You must trace the full request path." },
+    ],
+  },
+  {
+    id: "q3",
+    prompt: "Which GFS asset is most critical to protect from a ransomware attack?",
+    options: [
+      { id: "a", text: "Akamai edge nodes", correct: false, why: "CDN nodes cache public assets and don't store sensitive customer data." },
+      { id: "b", text: "The F5 load balancer", correct: false, why: "Load balancers are critical for availability but don't store customer data." },
+      { id: "c", text: "PostgreSQL primary — 14M customer accounts", correct: true, why: "Correct. Encrypting or destroying the database would be catastrophic — financially and under PCI-DSS/GDPR." },
+      { id: "d", text: "app-vm-07", correct: false, why: "Individual app VMs are replaceable. The database holds the irreplaceable data." },
+    ],
+  },
+];
 
 export const INTERVIEW = [
   {
-    q: "Walk me through what happens when a customer taps 'Log in' on our mobile app.",
-    a: "Device → TLS to edge (Cloudflare, WAF) → API gateway → auth-service pod → Entra ID for credential check → JWT minted → subsequent calls hit profile DB and core banking. Six layers, four pillars.",
+    q: "Explain the four pillars of a digital enterprise to a non-technical interviewer.",
+    a: "Every digital business runs on four pillars: Compute (the CPUs and memory that run software), Storage (the databases and file systems that hold data), Network (the cables and protocols that move data between systems and users), and Identity (the system that verifies who you are and what you're allowed to do). A failure or breach at any single pillar can take down the entire business.",
   },
   {
-    q: "Which pillar do modern attackers target most, and why?",
-    a: "Identity. Stealing a valid token or session bypasses network, compute, and storage controls. See Okta 2023, Midnight Blizzard 2024.",
+    q: "Walk me through how a customer login request travels at a large bank.",
+    a: "The request hits the CDN edge for TLS termination, passes to a load balancer that selects a healthy app server, the app server calls the identity/auth service which checks credentials against Active Directory, and if auth succeeds, the app server queries the database to load the account. The response travels back through the same path. A failure at any hop — network, compute, identity, or storage — causes the login to fail.",
   },
   {
-    q: "If the database is fine but customers can't see their balance, where do you look first?",
-    a: "Upstream of the DB — identity and app layers. The DB being healthy just means the failure is somewhere between customer and DB.",
+    q: "How do you distinguish between a cyber attack and an operational outage in the first 10 minutes?",
+    a: "In the first 10 minutes, you triage the four pillars: check compute health (CPU/memory metrics), storage replication lag and error rates, network connectivity between tiers, and identity service health. An operational outage typically has a clear infrastructure cause (hardware failure, misconfiguration, deployment). An attack may show lateral movement indicators, unusual access patterns, or alerts from the SIEM. You treat both as P1 until you have evidence to distinguish them.",
   },
 ];
 
 export const CAREER = {
-  role: "SOC Analyst Tier 1 → Tier 2",
+  role: "Junior SOC Analyst → SOC Analyst → Senior Analyst / Incident Responder",
   skillsUnlocked: [
-    "Enterprise architecture literacy",
-    "Incident triage framing (pillar-first)",
-    "Stakeholder communication (business + technical)",
+    "Enterprise triage framework (4 pillars)",
+    "Reading application and infrastructure logs",
+    "Stakeholder communication during incidents",
+    "Root cause analysis documentation",
   ],
-  nextTopics: ["F02 Computer Fundamentals", "F09 Networking Essentials", "F10 Information Security"],
-  cehLink: "Sets the mental model for CEH Module 01 (Introduction to Ethical Hacking) and Module 03 (Scanning).",
+  nextTopics: [
+    "F02 · Computer Fundamentals — how compute pillar works internally",
+    "F05 · Operating Systems — kernel, processes, privilege",
+    "F09 · Networking Essentials — deep dive into the network pillar",
+    "CEH M01 · Introduction to Ethical Hacking",
+  ],
+  cehLink: "Completing all 12 Foundation topics unlocks the CEH curriculum track.",
 };
-
-// Knowledge Graph nodes surfaced from this topic.
-export const KG_NODES = [
-  { id: "digital-world", label: "The Digital World", kind: "topic" },
-  { id: "compute", label: "Compute pillar", kind: "concept" },
-  { id: "storage", label: "Storage pillar", kind: "concept" },
-  { id: "network", label: "Network pillar", kind: "concept" },
-  { id: "identity", label: "Identity pillar", kind: "concept" },
-  { id: "attack-surface", label: "Attack surface", kind: "concept" },
-  { id: "gfs-online-banking", label: "GFS Online Banking (asset)", kind: "asset" },
-] as const;
