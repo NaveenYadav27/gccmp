@@ -4,6 +4,7 @@ import { FOUNDATION_TOPICS, getFoundationTopic } from "@/content/foundation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { OperatingSystemsExperience } from "@/components/os/operating-systems-experience";
+import { DigitalWorldExperience } from "@/components/foundation/digital-world-experience";
 
 export const Route = createFileRoute("/_authenticated/foundation/$topic")({
   head: ({ params }) => {
