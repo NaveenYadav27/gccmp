@@ -4,6 +4,7 @@ import { FOUNDATION_TOPICS, getFoundationTopic } from "@/content/foundation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { OperatingSystemsExperience } from "@/components/os/operating-systems-experience";
+import { DigitalWorldExperience } from "@/components/foundation/digital-world-experience";
 
 export const Route = createFileRoute("/_authenticated/foundation/$topic")({
   head: ({ params }) => {
@@ -43,6 +44,7 @@ function FoundationTopicPage() {
   const next = idx < FOUNDATION_TOPICS.length - 1 ? FOUNDATION_TOPICS[idx + 1] : undefined;
 
   if (topic.slug === "operating-systems") return <OperatingSystemsExperience />;
+  if (topic.slug === "digital-world") return <DigitalWorldExperience />;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-8 md:px-8">
