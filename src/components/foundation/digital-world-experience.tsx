@@ -100,7 +100,7 @@ export function DigitalWorldExperience() {
       <MissionComplete />
 
       <div className="fixed bottom-6 right-6 z-40">
-        <AiMentorDrawer context={CTX} />
+        <AiMentorDrawer sessionContext={CTX} />
       </div>
     </div>
   );
